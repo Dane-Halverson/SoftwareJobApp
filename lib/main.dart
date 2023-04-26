@@ -1,7 +1,8 @@
+import 'package:final_project/VideosView.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(VideosView());
 }
 
 class MyApp extends StatelessWidget {
