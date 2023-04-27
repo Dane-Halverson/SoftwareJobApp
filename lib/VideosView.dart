@@ -1,7 +1,5 @@
-import 'dart:ffi';
 
-import 'package:final_project/Index.dart';
-import 'package:final_project/VideosList.dart';
+import 'package:final_project/models/VideosList.dart';
 import 'package:flutter/material.dart';
 import 'models/VideosModel.dart';
 //import 'package:units/presenters/CalculatorPresenter.dart';
@@ -98,7 +96,7 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> {
                               ],
                             )),
                       ),
-                      Padding(padding: EdgeInsets.only(right: 8, left: 0),
+                      Padding(padding: const EdgeInsets.only(right: 8, left: 0),
                       child:  IconButton(
                         onPressed: () {
                           setState(() {
@@ -139,7 +137,7 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> {
               child: Row(
                 children: List<Widget>.generate(_options.length, (int index) {
                   return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 4),
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
                     child: ChoiceChip(
                       label: Text(_options[index].type),
                       selected: _value == index,
