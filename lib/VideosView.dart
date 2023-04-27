@@ -38,16 +38,68 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> {
 
   late final List<VideosList> _options = model.videos;
 
+  @override
+  void initState() {
+    super.initState();
+
+    for (int i = 0; i < model.videos.length; ++i) {
+      _pages.add(
+        ListView(
+          children: List<Widget>.generate(model.videos[i].videos.length, (int index) {
+            bool selected = false;
+            return GestureDetector(
+
+                onTap: () {
+                  _controller.load(model.videos[i].videos[index].id);
+                },
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Card(
+                          shape: RoundedRectangleBorder(
+                            side: const BorderSide(),
+                            borderRadius:
+                            BorderRadius.circular(20.0), //<-- SEE HERE
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.play_arrow_outlined,
+                                size: 40,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  model.videos[i].videos[index].title,
+                                  style: const TextStyle(
+                                    //color: Colors.white,
+                                    fontFamily: "WorkSans",
+                                    fontSize: 25,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          model.videos[i].videos[index].isFavorite = !model.videos[i].videos[index].isFavorite;
+                        });
+                      },
+                      icon: !model.videos[i].videos[index].isFavorite ? const Icon(Icons.favorite_border): const Icon(Icons.favorite),
+                    )
+                  ],
+                ));
+          }),
+        )
+      );
+
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    for (VideosList p in model.videos) {
-      _pages.add(
-        ListView(
-          children: getVideos(p),
-        ),
-      );
-    }
+
 
     return Scaffold(
         appBar: AppBar(
@@ -63,42 +115,22 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: List<Widget>.generate(_options.length, (int index) {
-                  return Padding(padding: EdgeInsets.symmetric(horizontal: 4),
-                  child: ChoiceChip(
-                    label: Text(_options[index].type),
-                    selected: _value == index,
-                    onSelected: (bool selected) {
-                      setState(() {
-                        _value = index;
-                      });
-                    },
-                  ),
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 4),
+                    child: ChoiceChip(
+                      label: Text(_options[index].type),
+                      selected: _value == index,
+                      onSelected: (bool selected) {
+                        setState(() {
+                          _value = index;
+                        });
+                      },
+                    ),
                   );
-
                 }),
               )),
           Expanded(child: _pages.elementAt(_value!)),
         ]));
-  }
-
-  ListView getChips() {
-    int i = 0;
-    List<bool> _selected = List.generate(model.videos.length, (index) => false);
-
-    return ListView.builder(
-      itemCount: model.videos.length,
-      itemBuilder: (BuildContext context, int index) {
-        return ChoiceChip(
-          label: Text(model.videos[index].type),
-          selected: _selected[index],
-          onSelected: (bool selected) {
-            setState(() {
-              _selected[index] = selected;
-            });
-          },
-        );
-      },
-    );
   }
 
   List<Widget> getVideos(VideosList videosList) {
@@ -106,33 +138,42 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> {
 
     for (var video in videosList.videos) {
       videos.add(GestureDetector(
-        onTap: () {
-          _controller.load(video.id);
-        },
-        child: Card(
-            shape: RoundedRectangleBorder(
-              side: const BorderSide(),
-              borderRadius: BorderRadius.circular(20.0), //<-- SEE HERE
-            ),
-            child: Row(
-              children: [
-                const Icon(
-                  Icons.play_arrow_outlined,
-                  size: 40,
-                ),
-                Expanded(
-                  child: Text(
-                    video.title,
-                    style: const TextStyle(
-                      //color: Colors.white,
-                      fontFamily: "WorkSans",
-                      fontSize: 25,
+          onTap: () {
+            _controller.load(video.id);
+          },
+          child: Row(
+            children: [
+              Expanded(
+                child: Card(
+                    shape: RoundedRectangleBorder(
+                      side: const BorderSide(),
+                      borderRadius: BorderRadius.circular(20.0), //<-- SEE HERE
                     ),
-                  ),
-                ),
-              ],
-            )),
-      ));
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.play_arrow_outlined,
+                          size: 40,
+                        ),
+                        Expanded(
+                          child: Text(
+                            video.title,
+                            style: const TextStyle(
+                              //color: Colors.white,
+                              fontFamily: "WorkSans",
+                              fontSize: 25,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )),
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.favorite_border),
+              )
+            ],
+          )));
     }
 
     return videos;

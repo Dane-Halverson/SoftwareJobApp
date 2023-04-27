@@ -7,14 +7,9 @@ class VideosModel {
 
   VideosModel() {
     videos.add(
-      VideosList(type: "interview tips", videos: [Video(id: 'HG68Ymazo18', title: 'Top Interview Tips: Common Questions, Nonverbal Communication & More | Indeed')])
+      VideosList(type: "interview tips", videos: [Video(id: 'HG68Ymazo18', title: 'Top Interview Tips: Common Questions, Nonverbal Communication & More | Indeed', isFavorite: false)])
     );
-    videos.add(
-        VideosList(type: "interview tips", videos: [Video(id: 'HG68Ymazo18', title: 'Top Interview Tips: Common Questions, Nonverbal Communication & More | Indeed')])
-    );
-    videos.add(
-        VideosList(type: "interview tips", videos: [Video(id: 'HG68Ymazo18', title: 'Top Interview Tips: Common Questions, Nonverbal Communication & More | Indeed')])
-    );
+
 
   }
 
