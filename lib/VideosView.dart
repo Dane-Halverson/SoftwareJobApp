@@ -60,6 +60,7 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> {
               child: Row(
                 children: getChips(),
 
+
             ),),
 
             Expanded(child: _pages.elementAt(_value! - 1)),
