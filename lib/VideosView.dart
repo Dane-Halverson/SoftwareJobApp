@@ -1,6 +1,8 @@
+import 'dart:ffi';
+
+import 'package:final_project/Index.dart';
 import 'package:final_project/VideosList.dart';
 import 'package:flutter/material.dart';
-import 'package:tuple/tuple.dart';
 import 'models/VideosModel.dart';
 //import 'package:units/presenters/CalculatorPresenter.dart';
 
@@ -25,7 +27,7 @@ class VideosStatefulWidget extends StatefulWidget {
 
 class _VideosStatefulWidgetState extends State<VideosStatefulWidget> {
   final VideosModel model = VideosModel();
-  int? _value = 1;
+  int? _value = 0;
   final List<Widget> _pages = <Widget>[];
   late final YoutubePlayerController _controller = YoutubePlayerController(
       initialVideoId: model.videos.first.videos.first.id,
@@ -33,6 +35,9 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> {
         autoPlay: false,
         mute: false,
       ));
+
+  late final List<VideosList> _options = model.videos;
+
 
   @override
   Widget build(BuildContext context) {
@@ -50,43 +55,50 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> {
             "Videos",
           ),
         ),
-        body: Column(
-          children: [
-            YoutubePlayer(
-              controller: _controller,
-            ),
-            SingleChildScrollView(
+        body: Column(children: [
+          YoutubePlayer(
+            controller: _controller,
+          ),
+          SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: getChips(),
+                children: List<Widget>.generate(_options.length, (int index) {
+                  return Padding(padding: EdgeInsets.symmetric(horizontal: 4),
+                  child: ChoiceChip(
+                    label: Text(_options[index].type),
+                    selected: _value == index,
+                    onSelected: (bool selected) {
+                      setState(() {
+                        _value = index;
+                      });
+                    },
+                  ),
+                  );
 
-
-            ),),
-
-            Expanded(child: _pages.elementAt(_value! - 1)),
-          ],
-        ));
+                }),
+              )),
+          Expanded(child: _pages.elementAt(_value!)),
+        ]));
   }
 
-  List<ChoiceChip> getChips() {
-    List<ChoiceChip> chips = [];
-    int i = 1;
-    for (VideosList list in model.videos) {
-      chips.add(
-        ChoiceChip(
-          label: Text(list.type),
-          selectedColor: Colors.deepPurpleAccent.shade100,
-          selected: _value == i,
+  ListView getChips() {
+    int i = 0;
+    List<bool> _selected = List.generate(model.videos.length, (index) => false);
+
+    return ListView.builder(
+      itemCount: model.videos.length,
+      itemBuilder: (BuildContext context, int index) {
+        return ChoiceChip(
+          label: Text(model.videos[index].type),
+          selected: _selected[index],
           onSelected: (bool selected) {
             setState(() {
-              _value = selected ? i : null;
+              _selected[index] = selected;
             });
           },
-        ),
-      );
-      i = i + 1;
-    }
-    return chips;
+        );
+      },
+    );
   }
 
   List<Widget> getVideos(VideosList videosList) {
