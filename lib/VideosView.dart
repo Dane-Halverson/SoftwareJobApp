@@ -2,9 +2,13 @@
 import 'package:final_project/models/VideosList.dart';
 import 'package:flutter/material.dart';
 import 'models/VideosModel.dart';
-//import 'package:units/presenters/CalculatorPresenter.dart';
-
+import 'package:flutter_animated_icons/flutter_animated_icons.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:lottie/lottie.dart';
+import 'package:flutter_animated_icons/icons8.dart';
+import 'package:flutter_animated_icons/lottiefiles.dart';
+
+
 
 class VideosView extends StatelessWidget {
   @override
@@ -23,7 +27,8 @@ class VideosStatefulWidget extends StatefulWidget {
   State<VideosStatefulWidget> createState() => _VideosStatefulWidgetState();
 }
 
-class _VideosStatefulWidgetState extends State<VideosStatefulWidget> {
+class _VideosStatefulWidgetState extends State<VideosStatefulWidget> with TickerProviderStateMixin{
+  late AnimationController _favoriteController;
 
   final VideosModel model = VideosModel();
 
@@ -37,7 +42,14 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> {
   @override
   void initState() {
     super.initState();
+    _favoriteController = AnimationController(vsync: this, duration: const Duration(seconds: 1));
     _value = model.videos[0].videos.isNotEmpty ? 0 : 1;
+  }
+
+  @override
+  void dispose() {
+    _favoriteController.dispose();
+    super.dispose();
   }
 
   @override
@@ -63,8 +75,12 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> {
           ListView(
             children: List<Widget>.generate(
                 model.videos[i].videos.length, (int index) {
-
+              if (model.videos[i].videos[index].isFavorite) {
+                _favoriteController.reset();
+                _favoriteController.animateTo(0.6);
+              }
               return model.videos[i].videos.isNotEmpty? GestureDetector(
+
                   onTap: () {
                     controller.load(model.videos[i].videos[index].id);
                   },
@@ -99,6 +115,12 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> {
                       Padding(padding: const EdgeInsets.only(right: 8, left: 0),
                       child:  IconButton(
                         onPressed: () {
+                          if (!model.videos[i].videos[index].isFavorite) {
+                            _favoriteController.reset();
+                            _favoriteController.animateTo(0.6);
+                          } else {
+                            _favoriteController.reverse();
+                          }
                           setState(() {
                             model.videos[i].videos[index].isFavorite = !model
                                 .videos[i].videos[index].isFavorite;
@@ -108,11 +130,12 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> {
                               );
                             }
                           });
+
                         },
-                        icon: model.videos[i].videos[index].isFavorite
-                            ? const Icon(Icons.favorite, color: Colors.red, size: 40,)
-                            : const Icon(Icons.favorite_border, size: 40,),
-                      ),
+                        icon: Lottie.asset(Icons8.heart_color, controller: _favoriteController),
+
+
+              ),
                       )
 
                     ],
@@ -123,11 +146,6 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> {
     }
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            "Videos",
-          ),
-        ),
         body: Column(children: [
           YoutubePlayer(
             controller: controller,
