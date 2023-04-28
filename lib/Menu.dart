@@ -1,3 +1,4 @@
+import 'package:final_project/CostEstimatorView.dart';
 import 'package:final_project/VideosView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
@@ -23,12 +24,16 @@ class _MenuStatefulWidgetState extends State<MenuStatefulWidget> with SingleTick
 
   final List<Widget> _pages = [];
   int _value = 0;
+
+  //pages
   final _videosPage = VideosView();
+  final _estimatorPage = CostEstimatorView();
 
   @override
   void initState() {
     super.initState();
     _pages.add(_videosPage);
+    _pages.add(_estimatorPage);
   }
 
 
@@ -51,13 +56,23 @@ class _MenuStatefulWidgetState extends State<MenuStatefulWidget> with SingleTick
                  child: Column(
                  crossAxisAlignment: CrossAxisAlignment.center,
                  mainAxisAlignment: MainAxisAlignment.start,
-                 children: [
+                 children:
+                 [
                    TextButton(
                        onPressed: switchToVideos,
                        child: const Text("Videos",
                          style: TextStyle(
                              color: Colors.white,
-                             fontSize: 40
+                             fontSize: 30
+                         ),
+
+                       )),
+                   TextButton(
+                       onPressed: switchToEstimator,
+                       child: const Text("Cost Estimator",
+                         style: TextStyle(
+                             color: Colors.white,
+                             fontSize: 30
                          ),
 
                        ))
@@ -77,6 +92,12 @@ class _MenuStatefulWidgetState extends State<MenuStatefulWidget> with SingleTick
   void switchToVideos() {
     setState(() {
       _value = _pages.indexOf(_videosPage);
+    });
+  }
+
+  void switchToEstimator() {
+    setState(() {
+      _value = _pages.indexOf(_estimatorPage);
     });
   }
 

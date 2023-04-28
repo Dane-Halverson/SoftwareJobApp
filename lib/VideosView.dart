@@ -118,10 +118,17 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> with Ticker
                           if (!model.videos[i].videos[index].isFavorite) {
                             _favoriteController.reset();
                             _favoriteController.animateTo(0.6);
+                            setState(() {
+                              model.videos[i].videos[index].isFavorite = !model
+                                  .videos[i].videos[index].isFavorite;
+                              if(model.videos[i].videos[index].isFavorite) {
+                                model.videos[0].videos.add(
+                                    model.videos[i].videos[index]
+                                );
+                              }
+                            });
                           } else {
                             _favoriteController.reverse();
-                          }
-                          setState(() {
                             model.videos[i].videos[index].isFavorite = !model
                                 .videos[i].videos[index].isFavorite;
                             if(model.videos[i].videos[index].isFavorite) {
@@ -129,7 +136,8 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> with Ticker
                                   model.videos[i].videos[index]
                               );
                             }
-                          });
+                          }
+
 
                         },
                         icon: Lottie.asset(Icons8.heart_color, controller: _favoriteController),
