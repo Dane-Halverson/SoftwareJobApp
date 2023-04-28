@@ -3,27 +3,35 @@ import 'models/CityData.dart';
 import 'models/CityList.dart';
 import 'models/CostEstimates.dart';
 
-class CostEstimatorView extends StatelessWidget{
+class CostEstimatorView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CostEstimatorStatefulWidget(key: super.key,),
+      body: CostEstimatorStatefulWidget(
+        key: super.key,
+      ),
     );
   }
 }
 
-class CostEstimatorStatefulWidget extends StatefulWidget{
+class CostEstimatorStatefulWidget extends StatefulWidget {
   const CostEstimatorStatefulWidget({super.key});
 
   @override
-  State<CostEstimatorStatefulWidget> createState() => _CostEstimatorStatefulWidgetState();
-
+  State<CostEstimatorStatefulWidget> createState() =>
+      _CostEstimatorStatefulWidgetState();
 }
 
-class _CostEstimatorStatefulWidgetState extends State<CostEstimatorStatefulWidget>{
+class _CostEstimatorStatefulWidgetState
+    extends State<CostEstimatorStatefulWidget> {
   final TextEditingController _searchController = TextEditingController();
   final CityList _cities = CityList();
   final List<CityData> _match = [];
+
+  final _txtStyle = const TextStyle(fontSize: 15,);
+  final _headStyle = const TextStyle(
+    fontSize: 17,
+  );
 
   @override
   void initState() {
@@ -36,41 +44,70 @@ class _CostEstimatorStatefulWidgetState extends State<CostEstimatorStatefulWidge
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(padding: const EdgeInsets.all(10),
+        Padding(
+          padding: const EdgeInsets.all(10),
           child: TextFormField(
             controller: _searchController,
-            decoration: const InputDecoration(
-              icon: Icon(Icons.search_rounded)
-            ),
+            decoration: const InputDecoration(icon: Icon(Icons.search_rounded)),
           ),
         ),
-        Expanded(child: ListView(
+        Expanded(
+            child: ListView(
           children: List<Widget>.generate(_match.length, (index) {
-            return Padding(padding: EdgeInsets.all(10),
+            return Padding(
+              padding: const EdgeInsets.all(10),
               child: Card(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(_match[index].city),
-                    Text(CostEstimator.esitmateRent(
-                        costOfLiving: _match[index].costOfLiving,
-                        rent: _match[index].rent)),
-                    Text(CostEstimator.esitmateHouse(
-                        housePrice: _match[index].medianHomePrice,
-                        costOfLiving: _match[index].costOfLiving)),
-                    Text(CostEstimator.esitmateHouse15Year(
-                        housePrice: _match[index].medianHomePrice,
-                        costOfLiving: _match[index].costOfLiving)),
-                    Text(CostEstimator.esitmateHouse30Year(
-                        housePrice: _match[index].medianHomePrice,
-                        costOfLiving: _match[index].costOfLiving)),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      child: Chip(
+                        label: Text(
+                          _match[index].city,
+                          style: _headStyle,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 15),
+                      child: Text(
+                          CostEstimator.esitmateRent(
+                              costOfLiving: _match[index].costOfLiving,
+                              rent: _match[index].rent),
+                          style: _txtStyle),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 15),
+                      child: Text(
+                          CostEstimator.esitmateHouse(
+                              housePrice: _match[index].medianHomePrice,
+                              costOfLiving: _match[index].costOfLiving),
+                          style: _txtStyle),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 15),
+                      child: Text(
+                          CostEstimator.esitmateHouse15Year(
+                              housePrice: _match[index].medianHomePrice,
+                              costOfLiving: _match[index].costOfLiving),
+                          style: _txtStyle),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 15),
+                      child: Text(
+                          CostEstimator.esitmateHouse30Year(
+                              housePrice: _match[index].medianHomePrice,
+                              costOfLiving: _match[index].costOfLiving),
+                          style: _txtStyle),
+                    ),
                   ],
                 ),
               ),
             );
           }),
         ))
-
-
       ],
     );
   }
@@ -80,15 +117,15 @@ class _CostEstimatorStatefulWidgetState extends State<CostEstimatorStatefulWidge
       _match.clear();
       if (_searchController.text == '') {
         _match.addAll(_cities.cities);
-      }
-      else {
+      } else {
         for (CityData city in _cities.cities) {
-          if (city.city.toLowerCase().contains(_searchController.text.toLowerCase())) {
+          if (city.city
+              .toLowerCase()
+              .contains(_searchController.text.toLowerCase())) {
             _match.add(city);
           }
         }
       }
     });
   }
-
 }
