@@ -4,10 +4,10 @@ import 'package:final_project/app/models.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
-abstract class AuthState {
-  const AuthState();
+abstract class AppState {
+  const AppState();
 
-  static AuthState loadAuthState() {
+  static AppState loadAuthState() {
     final auth = FirebaseAuth.instance;
     if (auth.currentUser != null) {
       return AuthorizedState();
@@ -17,17 +17,31 @@ abstract class AuthState {
   }
 }
 
-class AuthorizedState extends AuthState {
+class AuthorizedState extends AppState {
   UserData? userData;
 
   AuthorizedState({this.userData});
 }
 
-class UnauthorizedState extends AuthState {
+class UnauthorizedState extends AppState {
   UnauthorizedState();
 }
 
 @immutable
-class AuthedAsGuestState extends AuthState {
+class AuthedAsGuestState extends AppState {
   const AuthedAsGuestState();
+}
+
+abstract class ThemeState {
+  const ThemeState();
+}
+
+@immutable
+class LightThemeState extends ThemeState {
+  const LightThemeState();
+}
+
+@immutable
+class DarkThemeState extends ThemeState {
+  const DarkThemeState();
 }

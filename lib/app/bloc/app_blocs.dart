@@ -6,10 +6,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'app_events.dart';
 import 'app_state.dart';
 
-class AuthStatusBloc extends Bloc<AccountEvent, AuthState> {
-  AuthStatusBloc() : super(AuthState.loadAuthState()) {
+class AppBloc extends Bloc<AppEvent, AppState> {
+  AppBloc() : super(AppState.loadAuthState()) {
     // since the user data would be null here, we can use a future builder to build the pages requiring the user data class if the Authorized state is detected with null data
-    on<UserRegisteredEvent>((UserRegisteredEvent event, Emitter<AuthState> emit) async {
+    on<UserRegisteredEvent>((UserRegisteredEvent event, Emitter<AppState> emit) async {
       final auth = FirebaseAuth.instance;
       try {
         final credentials = await auth.createUserWithEmailAndPassword(email: event.email, password: event.password);
@@ -38,7 +38,7 @@ class AuthStatusBloc extends Bloc<AccountEvent, AuthState> {
         // TODO handle registration error
       }
     });
-    on<UserLoggedInEvent>((UserLoggedInEvent event, Emitter<AuthState> emit) async {
+    on<UserLoggedInEvent>((UserLoggedInEvent event, Emitter<AppState> emit) async {
       final auth = FirebaseAuth.instance;
       try {
         await auth.signInWithEmailAndPassword(email: event.email, password: event.password);
@@ -49,12 +49,12 @@ class AuthStatusBloc extends Bloc<AccountEvent, AuthState> {
         // TODO handle sign in errors
       }
     });
-    on<UserLoggedOutEvent>((UserLoggedOutEvent event, Emitter<AuthState> emit) async {
+    on<UserLoggedOutEvent>((UserLoggedOutEvent event, Emitter<AppState> emit) async {
       await FirebaseAuth.instance.signOut();
 
       emit(UnauthorizedState());
     });
-    on<UserDeletedAccountEvent>((UserDeletedAccountEvent event, Emitter<AuthState> emit) async {
+    on<UserDeletedAccountEvent>((UserDeletedAccountEvent event, Emitter<AppState> emit) async {
       final auth = FirebaseAuth.instance;
       final currUser = auth.currentUser;
       if (currUser != null) {
@@ -68,7 +68,7 @@ class AuthStatusBloc extends Bloc<AccountEvent, AuthState> {
         }
       }
     });
-    on<GuestLoggedInEvent>((GuestLoggedInEvent event, Emitter<AuthState> emit) async {
+    on<GuestLoggedInEvent>((GuestLoggedInEvent event, Emitter<AppState> emit) async {
       final auth = FirebaseAuth.instance;
       try {
         await auth.signInAnonymously();
@@ -77,6 +77,17 @@ class AuthStatusBloc extends Bloc<AccountEvent, AuthState> {
       } on FirebaseAuthException catch(err) {
         // TODO handle the sign in error
       }
+    });
+  }
+}
+
+class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
+  ThemeBloc() : super(const LightThemeState()) {
+    on<ChangedToLightThemeEvent>((event, emit) {
+      emit(const LightThemeState());
+    });
+    on<ChangedToDarkThemeEvent>((event, emit) {
+      emit(const DarkThemeState());
     });
   }
 }

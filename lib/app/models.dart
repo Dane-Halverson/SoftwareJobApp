@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,17 +19,15 @@ class UserData {
     required this.email
   }) {
     final now = DateTime.now();
-    if (birthday.month >= now.month && birthday.day >= now.day &&
-        (now.year - birthday.year) != age) {
+    if (birthday.month >= now.month && birthday.day >= now.day && (now.year - birthday.year) != age) {
       age++;
     }
   }
 
-  static Future<UserData?> getUserDataFromDB() async {
+  static Future<UserData> getUserDataFromDB() async {
     final auth = FirebaseAuth.instance;
     if (auth.currentUser != null) {
-      final userDoc = FirebaseFirestore.instance.collection('users').doc(
-          auth.currentUser?.uid);
+      final userDoc = FirebaseFirestore.instance.collection('users').doc(auth.currentUser?.uid);
       final snapshot = await userDoc.get();
       final userData = snapshot.data();
       if (userData != null) {
@@ -43,6 +43,6 @@ class UserData {
             'Something went wrong when loading the user data from DB');
       }
     }
-    return null;
+    throw ErrorDescription('The user should have something in the db!');
   }
 }
