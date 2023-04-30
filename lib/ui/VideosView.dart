@@ -1,7 +1,7 @@
 
-import 'package:final_project/models/VideosList.dart';
+import 'package:final_project/videos/models/VideosList.dart';
 import 'package:flutter/material.dart';
-import 'models/VideosModel.dart';
+import 'package:final_project/videos/models/VideosModel.dart';
 import 'package:flutter_animated_icons/flutter_animated_icons.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:lottie/lottie.dart';

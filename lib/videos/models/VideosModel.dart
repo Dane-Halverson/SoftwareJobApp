@@ -1,5 +1,5 @@
-import 'package:final_project/models/VideosList.dart';
-import 'package:final_project/models/Video.dart';
+import 'VideosList.dart';
+import 'Video.dart';
 
 class VideosModel {
 

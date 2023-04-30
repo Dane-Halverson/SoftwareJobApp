@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'models/CityData.dart';
-import 'models/CityList.dart';
-import 'models/CostEstimates.dart';
+import '../city/models/CityData.dart';
+import '../city/models/CityList.dart';
+import '../city/models/CostEstimates.dart';
 
 class CostEstimatorView extends StatelessWidget {
   @override
