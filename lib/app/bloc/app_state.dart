@@ -28,6 +28,11 @@ class UnauthorizedState extends AppState {
 }
 
 @immutable
+class RegisteringState extends AppState {
+  const RegisteringState();
+}
+
+@immutable
 class AuthedAsGuestState extends AppState {
   const AuthedAsGuestState();
 }

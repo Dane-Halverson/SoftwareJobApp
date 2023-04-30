@@ -78,6 +78,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         // TODO handle the sign in error
       }
     });
+    on<GuestWantsToRegisterEvent>((event, emit) {
+      emit(const RegisteringState());
+    });
   }
 }
 

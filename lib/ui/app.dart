@@ -46,7 +46,11 @@ final _appView = BlocConsumer<AppBloc, AppState>(
         // return LoginView()
       }
       if (state is AuthedAsGuestState) {
+        // return LoggedInView()
         return const Text('Guest view');
+      }
+      if (state is RegisteringState) {
+        // return CreateAccountView()
       }
       throw ErrorDescription('A non-valid state was passed when building the app view!');
     }
