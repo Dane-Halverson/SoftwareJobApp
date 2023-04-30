@@ -2,12 +2,12 @@ import 'package:flutter/foundation.dart' show immutable;
 import 'package:final_project/app/models.dart' show UserData;
 
 @immutable
-abstract class AccountEvent {
-  const AccountEvent();
+abstract class AppEvent {
+  const AppEvent();
 }
 
 @immutable
-class UserRegisteredEvent implements AccountEvent {
+class UserRegisteredEvent implements AppEvent {
   final String firstName;
   final String lastName;
   final int age;
@@ -26,7 +26,7 @@ class UserRegisteredEvent implements AccountEvent {
 }
 
 @immutable
-class UserLoggedInEvent implements AccountEvent {
+class UserLoggedInEvent implements AppEvent {
   final String email;
   final String password;
 
@@ -37,12 +37,12 @@ class UserLoggedInEvent implements AccountEvent {
 }
 
 @immutable
-class UserLoggedOutEvent implements AccountEvent {
+class UserLoggedOutEvent implements AppEvent {
   const UserLoggedOutEvent();
 }
 
 @immutable
-class UserDeletedAccountEvent implements AccountEvent {
+class UserDeletedAccountEvent implements AppEvent {
   final String userId; // This is so that the user document can be deleted from Firestore
 
   const UserDeletedAccountEvent({
@@ -51,11 +51,26 @@ class UserDeletedAccountEvent implements AccountEvent {
 }
 
 @immutable
-class GuestLoggedInEvent implements AccountEvent {
+class GuestLoggedInEvent implements AppEvent {
   const GuestLoggedInEvent();
 }
 
 @immutable
-class GuestWantsToRegisterEvent implements AccountEvent {
+class GuestWantsToRegisterEvent implements AppEvent {
   const GuestWantsToRegisterEvent();
+}
+
+@immutable
+abstract class ThemeEvent {
+  const ThemeEvent();
+}
+
+@immutable
+class ChangedToLightThemeEvent extends ThemeEvent {
+  const ChangedToLightThemeEvent();
+}
+
+@immutable
+class ChangedToDarkThemeEvent extends ThemeEvent {
+  const ChangedToDarkThemeEvent();
 }

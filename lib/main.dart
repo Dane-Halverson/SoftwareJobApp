@@ -1,5 +1,5 @@
-import 'package:final_project/ui/Menu.dart';
-import 'package:final_project/ui/themes.dart';
+import 'package:final_project/ui/app.dart' show App;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -9,5 +9,6 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(Menu());
+  // await FirebaseAuth.instance.signInWithEmailAndPassword(email: 'ryanaldo34@gmail.com', password: 'password');
+  runApp(const App());
 }
