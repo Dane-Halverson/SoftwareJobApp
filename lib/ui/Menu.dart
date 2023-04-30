@@ -1,5 +1,5 @@
-import 'package:final_project/CostEstimatorView.dart';
-import 'package:final_project/VideosView.dart';
+import 'package:final_project/ui/CostEstimatorView.dart';
+import 'package:final_project/ui/VideosView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 

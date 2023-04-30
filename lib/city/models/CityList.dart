@@ -9,7 +9,6 @@ class CityList {
       CityData(city: "Columbus, OH",
           meanSalaryAdjusted: 117552,
           meanSalaryUnadjusted: 108500,
-          meanSalaryAllOccupations: 51260,
           numberOfSoftwareJobs: 13430,
           medianHomePrice: 192000,
           costOfLiving: 984.8,
