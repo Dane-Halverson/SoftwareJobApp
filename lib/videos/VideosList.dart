@@ -5,6 +5,6 @@ class VideosList{
   String type;
   List<Video> videos;
 
-  VideosList({required this.type, this.videos = const [] });
+  VideosList({required this.type, required this.videos});
 
 }
