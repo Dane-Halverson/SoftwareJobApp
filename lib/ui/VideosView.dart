@@ -141,7 +141,7 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> with Ticker
                                         !videosList[i].videos[index].isFavorite;
                                         if (videosList[i].videos[index]
                                             .isFavorite) {
-
+                                          videosList[0].videos.add(videosList[i].videos[index]);
                                           VideosModel.addFavorite
                                             (videosList[i].videos[index].id,
                                               videosList[i].videos[index].title);
@@ -193,7 +193,7 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> with Ticker
                           );
                         }),
                       )),
-                  Expanded(child: _pages.elementAt(_value!) ?? Text("nothing to show")
+                  Expanded(child: _pages.elementAt(_value)
                   ),
                 ]));
           }
