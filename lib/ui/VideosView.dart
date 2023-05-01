@@ -193,7 +193,7 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> with Ticker
                           );
                         }),
                       )),
-                  Expanded(child: _pages.elementAt(_value!) ?? Text("nothing to show")
+                  Expanded(child: _pages.elementAt(_value)
                   ),
                 ]));
           }

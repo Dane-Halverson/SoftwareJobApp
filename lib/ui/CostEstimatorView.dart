@@ -4,6 +4,8 @@ import '../city/models/CityList.dart';
 import '../city/models/CostEstimates.dart';
 
 class CostEstimatorView extends StatelessWidget {
+  const CostEstimatorView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,8 +27,10 @@ class CostEstimatorStatefulWidget extends StatefulWidget {
 class _CostEstimatorStatefulWidgetState
     extends State<CostEstimatorStatefulWidget> {
   final TextEditingController _searchController = TextEditingController();
-  final List<CityData> _match = [];
-  List<CityData> _cities = [];
+  List<CityData> _match = [];
+  late List<CityData> _cities;
+  late Future<List<CityData>> _citiesList;
+  bool _copied = false;
 
   final _txtStyle = const TextStyle(fontSize: 15,);
   final _headStyle = const TextStyle(
@@ -37,16 +41,21 @@ class _CostEstimatorStatefulWidgetState
   void initState() {
     super.initState();
     _searchController.addListener(onSearch);
+    _citiesList = CityList.getCities();
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: CityList.getCities(),
+        future: _citiesList,
         builder: (BuildContext context, AsyncSnapshot<List<CityData>> snapshot) {
           if (snapshot.hasData) {
-            _cities = snapshot.data!;
-            _match.addAll(_cities);
+            List<CityData> cities = snapshot.data!;
+            if (!_copied) {
+              _cities = cities;
+              _match.addAll(_cities);
+              _copied = true;
+            }
             return Column(
               children: [
                 Padding(
@@ -67,7 +76,7 @@ class _CostEstimatorStatefulWidgetState
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 5),
+                                  padding: const EdgeInsets.symmetric(horizontal: 5),
                                   child: Chip(
                                     label: Text(
                                       _match[index].city,
@@ -76,7 +85,7 @@ class _CostEstimatorStatefulWidgetState
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(left: 15),
+                                  padding: const EdgeInsets.only(left: 15),
                                   child: Text(
                                       CostEstimator.esitmateRent(
                                           costOfLiving: _match[index].costOfLiving,
@@ -84,7 +93,7 @@ class _CostEstimatorStatefulWidgetState
                                       style: _txtStyle),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(left: 15),
+                                  padding: const EdgeInsets.only(left: 15),
                                   child: Text(
                                       CostEstimator.esitmateHouse(
                                           housePrice: _match[index].medianHomePrice,
@@ -92,7 +101,7 @@ class _CostEstimatorStatefulWidgetState
                                       style: _txtStyle),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(left: 15),
+                                  padding: const EdgeInsets.only(left: 15),
                                   child: Text(
                                       CostEstimator.esitmateHouse15Year(
                                           housePrice: _match[index].medianHomePrice,
@@ -100,7 +109,7 @@ class _CostEstimatorStatefulWidgetState
                                       style: _txtStyle),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(left: 15),
+                                  padding: const EdgeInsets.only(left: 15),
                                   child: Text(
                                       CostEstimator.esitmateHouse30Year(
                                           housePrice: _match[index].medianHomePrice,
@@ -120,11 +129,7 @@ class _CostEstimatorStatefulWidgetState
             return const Center(child: CircularProgressIndicator());
           }
         }
-
-
     );
-
-
   }
 
   void onSearch() {
