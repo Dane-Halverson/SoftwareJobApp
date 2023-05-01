@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CityData {
@@ -6,7 +5,7 @@ class CityData {
   final String city;
   final double meanSalaryAdjusted;
   final double meanSalaryUnadjusted;
-  final int numberOfSoftwareJobs;
+  final double numberOfSoftwareJobs;
   final double medianHomePrice;
   final double costOfLiving;
   final double rent;
