@@ -35,9 +35,7 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> with Ticker
   final VideosModel model = VideosModel();
 
   final List<Widget> _pages = <Widget>[];
-  final Future<List<VideosList>> _videos = VideosModel.getVideosList();
-
-
+  late final Future<List<VideosList>> _videos;
   late List _options;
 
   int _value = 0;
@@ -48,6 +46,7 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> with Ticker
   void initState() {
     super.initState();
     _favoriteController = AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    _videos = VideosModel.getVideosList();
   }
 
   @override
@@ -60,17 +59,16 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> with Ticker
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: _videos,
-        builder: (BuildContext context, AsyncSnapshot<List<VideosList>> snapshot) {
-          if (snapshot.hasData) {
-            List<VideosList> videosList = snapshot.data!;
-            _options = videosList;
+      builder: (BuildContext context, AsyncSnapshot<List<VideosList>> snapshot) {
+        if (snapshot.hasData) {
+          List<VideosList> videosList = snapshot.data!;
+          _options = videosList;
 
-            if(videosList.isEmpty) {
-              return const Center(
-                child: Text('no videos'),
-              );
-            }
-
+          if(videosList.isEmpty) {
+            return const Center(
+              child: Text('no videos'),
+            );
+          }
 
             YoutubePlayerController controller = YoutubePlayerController(
                 initialVideoId: videosList[0].videos.isNotEmpty ? videosList
