@@ -3,13 +3,14 @@ import 'package:final_project/ui/VideosView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 
+import '../city/views/city_stats_browser.dart';
+
 class Menu extends StatelessWidget{
   const Menu({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MenuStatefulWidget(key: super.key),
+    return Scaffold(
+      body: MenuStatefulWidget(key: super.key),
     );
   }
 }
@@ -35,6 +36,7 @@ class _MenuStatefulWidgetState extends State<MenuStatefulWidget> with SingleTick
     super.initState();
     _pages.add(_videosPage);
     _pages.add(_estimatorPage);
+    _pages.add(CityStatsBrowser());
   }
 
 
@@ -46,12 +48,13 @@ class _MenuStatefulWidgetState extends State<MenuStatefulWidget> with SingleTick
           body: Padding(
             padding: const EdgeInsets.only(top: 52),
             child: SliderDrawer(
-              appBar: const SliderAppBar(
-                  appBarColor: Colors.white,
-                  title: Text("test",
-                      style: TextStyle(
-                          fontSize: 22, fontWeight: FontWeight.w700))),
-              slider: Container(color: Colors.blue,
+              appBar: SliderAppBar(
+                title: Text(
+                  'Final Project',
+                  style: Theme.of(context).textTheme.labelLarge,
+                )
+              ),
+              slider: Container(color: Theme.of(context).colorScheme.background,
                child: Padding(
                  padding: const EdgeInsets.symmetric(vertical: 50),
                  child: Column(
@@ -59,24 +62,34 @@ class _MenuStatefulWidgetState extends State<MenuStatefulWidget> with SingleTick
                  mainAxisAlignment: MainAxisAlignment.start,
                  children:
                  [
-                   TextButton(
-                       onPressed: switchToVideos,
-                       child: const Text("Videos",
-                         style: TextStyle(
-                             color: Colors.white,
-                             fontSize: 30
-                         ),
-
-                       )),
-                   TextButton(
-                       onPressed: switchToEstimator,
-                       child: const Text("Cost Estimator",
-                         style: TextStyle(
-                             color: Colors.white,
-                             fontSize: 30
-                         ),
-
-                       ))
+                   TextButton.icon(
+                     onPressed: () {
+                       setState(() {
+                         _value = 2;
+                       });
+                     },
+                     label: const Text('Browse Cities',),
+                     icon: const Icon(
+                       Icons.browse_gallery,
+                       size: 32.0
+                     )
+                   ),
+                   TextButton.icon(
+                     onPressed: switchToVideos,
+                     label: const Text("Videos",),
+                      icon: const Icon(
+                        Icons.play_arrow,
+                        size: 32.0
+                      )
+                   ),
+                   TextButton.icon(
+                     onPressed: switchToEstimator,
+                     label: const Text("Cost Estimator",),
+                      icon: const Icon(
+                       Icons.money,
+                       size: 32.0
+                      )
+                   )
                  ],
                ),
                ),
