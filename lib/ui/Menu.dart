@@ -64,82 +64,85 @@ class _MenuStatefulWidgetState extends State<Menu> with SingleTickerProviderStat
                   style: Theme.of(context).textTheme.labelLarge,
                 )
               ),
-              slider: Container(color: Theme.of(context).colorScheme.background,
-               child: Padding(
-                 padding: const EdgeInsets.symmetric(vertical: 50),
-                 child: Column(
-                 crossAxisAlignment: CrossAxisAlignment.start,
-                 mainAxisAlignment: MainAxisAlignment.start,
-                 children:
-                 [
-                   TextButton.icon(
-                       onPressed: () {
-                         setState(() {
-                           _value = 0;
-                         });
-                       },
-                       label: const Text('Jobs',),
-                       icon: const Icon(
-                           Icons.cases_rounded,
-                           size: 32.0
-                       )
-                   ),
-                   TextButton.icon(
-                     onPressed: () {
-                       setState(() {
-                         _value = 3;
-                       });
-                     },
-                     label: const Text('Browse Cities',),
-                     icon: const Icon(
-                         Icons.browse_gallery,
-                         size: 32.0
-                     )
-                   ),
-                   TextButton.icon(
-                     onPressed: switchToVideos,
-                     label: const Text("Videos",),
-                      icon: const Icon(
-                        Icons.play_arrow,
-                        size: 32.0
-                      )
-                   ),
-                   TextButton.icon(
-                     onPressed: switchToEstimator,
-                     label: const Text("Cost Estimator",),
-                      icon: const Icon(
-                       Icons.money,
-                       size: 32.0
-                      )
-                   ),
-                   TextButton.icon(
-                       onPressed: () {
-                         setState(() {
-                           _value = _pages.length - 2;
-                         });
-                       },
-                       label: const Text('Preferences',),
-                       icon: const Icon(
-                           Icons.info,
-                           size: 32.0
-                       )
-                   ),
-                      Padding(padding: EdgeInsets.only(top: 100),
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child:  IconButton(
-                            splashRadius: 50,
-                            iconSize: 70,
-                            onPressed: switchToSettings,
-                            icon: const Icon(Icons.settings,
+              slider: SingleChildScrollView(
+                child: Container(color: Theme.of(context).colorScheme.background,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 50),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children:
+                      [
+                        TextButton.icon(
+                            onPressed: () {
+                              setState(() {
+                                _value = 0;
+                              });
+                            },
+                            label: const Text('Jobs',),
+                            icon: const Icon(
+                                Icons.cases_rounded,
+                                size: 32.0
+                            )
+                        ),
+                        TextButton.icon(
+                            onPressed: () {
+                              setState(() {
+                                _value = 3;
+                              });
+                            },
+                            label: const Text('Browse Cities',),
+                            icon: const Icon(
+                                Icons.browse_gallery,
+                                size: 32.0
+                            )
+                        ),
+                        TextButton.icon(
+                            onPressed: switchToVideos,
+                            label: const Text("Videos",),
+                            icon: const Icon(
+                                Icons.play_arrow,
+                                size: 32.0
+                            )
+                        ),
+                        TextButton.icon(
+                            onPressed: switchToEstimator,
+                            label: const Text("Cost Estimator",),
+                            icon: const Icon(
+                                Icons.money,
+                                size: 32.0
+                            )
+                        ),
+                        TextButton.icon(
+                            onPressed: () {
+                              setState(() {
+                                _value = _pages.length - 2;
+                              });
+                            },
+                            label: const Text('Preferences',),
+                            icon: const Icon(
+                                Icons.info,
+                                size: 32.0
+                            )
+                        ),
+                        Padding(padding: EdgeInsets.only(top: 100),
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child:  IconButton(
+                              splashRadius: 50,
+                              iconSize: 70,
+                              onPressed: switchToSettings,
+                              icon: const Icon(Icons.settings,
+                              ),
+                            ),
                           ),
-                      ),
+                        )
+                      ],
                     ),
-                  )
-                 ],
-               ),
-            ),
-          ),
+                  ),
+                ),
+              ),
+
          child: _pages.elementAt(_value),
         ),
       ),
