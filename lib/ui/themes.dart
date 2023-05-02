@@ -58,3 +58,56 @@ final lightTheme = ThemeData(
     onPrimary: Colors.white,
   )
 );
+
+const darkContainerDecoration = BoxDecoration(
+    color: _darkBackground,
+    borderRadius: BorderRadius.all(Radius.circular(8.0)),
+    boxShadow: <BoxShadow> [
+      BoxShadow(color: _black, blurRadius: 10.0, spreadRadius: 3.0)
+    ]
+);
+
+
+
+final darkTheme = ThemeData(
+    fontFamily: 'Poppins',
+    splashColor:  _primary,
+    iconTheme: const IconThemeData(
+        color: _accent,
+        size: 48.0
+    ),
+    shadowColor: _black,
+    textTheme: const TextTheme(
+      displayLarge: TextStyle(
+          fontSize: 36.0,
+          fontWeight: FontWeight.w200,
+          letterSpacing: 0.7
+      ),
+      titleLarge: TextStyle(
+        fontSize: 28.0,
+        fontWeight: FontWeight.w400,
+      ),
+      bodyMedium: TextStyle(
+          fontSize: 15.0,
+          letterSpacing: 0.2
+      ),
+      labelLarge: TextStyle(
+          fontSize: 18.0,
+          letterSpacing: 0.5,
+          fontWeight: FontWeight.bold
+      ),
+    ),
+    colorScheme: const ColorScheme(
+      background: _darkBackground,
+      onBackground: Colors.white,
+      brightness: Brightness.dark,
+      primary: _primary,
+      secondary: _secondary,
+      error: Color.fromRGBO(255, 133, 141, 1.0),
+      onError: Colors.white,
+      surface: _darkSurface,
+      onSurface: Colors.white,
+      onSecondary: Colors.white,
+      onPrimary: Colors.white,
+    )
+);

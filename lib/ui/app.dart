@@ -82,7 +82,7 @@ class AppDarkTheme extends StatelessWidget {
         create: (_) => AppBloc(),
         child: MaterialApp(
             title: 'Final Project',
-            theme: lightTheme,
+            theme: darkTheme,
             home: _appView
         )
     );
