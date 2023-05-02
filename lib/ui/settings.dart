@@ -112,7 +112,7 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
   }
 
   toSignIn() {
-    throw UnimplementedError();
+    //throw UnimplementedError();
   }
 
   void switchToDark() {}
