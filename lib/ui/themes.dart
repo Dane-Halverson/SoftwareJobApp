@@ -55,7 +55,10 @@ final lightTheme = ThemeData(
     surface: Colors.white,
     onSurface: _black,
     onSecondary: Colors.white,
+    shadow: _grey,
     onPrimary: Colors.white,
+    onPrimaryContainer: _black,
+    primaryContainer: Colors.white
   )
 );
 

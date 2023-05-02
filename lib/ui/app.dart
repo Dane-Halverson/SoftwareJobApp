@@ -18,73 +18,77 @@ const loader = SizedBox(
   )
 );
 
-final _appView = BlocConsumer<AppBloc, AppState>(
-    listener: (context, state) {
-      // TODO add logic for showing auth errors to user here
-    },
-    builder: (context, state) {
-      if (state is AuthorizedState) {
-        if (state.userData == null) {
-          return FutureBuilder<UserData>(
-              future: UserData.getUserDataFromDB(),
-              builder: (BuildContext context, AsyncSnapshot<UserData> snapshot) {
-                final data = snapshot.data;
-                if (!snapshot.hasData) {
-                  return loader;
-                }
-                if (data != null) {
-                  return Menu();
-                }
-                else {
-                  return loader;
-                }
-              }
-          );
+BlocConsumer<AppBloc, AppState> _getAppView() {
+  return BlocConsumer<AppBloc, AppState>(
+      listener: (context, state) {
+        // TODO add logic for showing auth errors to user here
+      },
+      builder: (context, state) {
+        if (state is AuthorizedState) {
+          return const Menu();
         }
-        return Menu();
+        if (state is UnauthorizedState) {
+          return const SignIn();
+        }
+        if (state is AuthedAsGuestState) {
+          return const GuestMenu();
+        }
+        if (state is RegisteringState) {
+          return CreateAccount();
+        }
+        throw ErrorDescription('A non-valid state was passed when building the app view!');
       }
-      if (state is UnauthorizedState) {
-        return SignIn();
-      }
-      if (state is AuthedAsGuestState) {
-        // return LoggedInView()
-        return const Text('Guest view');
-      }
-      if (state is RegisteringState) {
-        return CreateAccount();
-      }
-      throw ErrorDescription('A non-valid state was passed when building the app view!');
-    }
-);
+  );
+}
 
 class AppLightTheme extends StatelessWidget {
-  const AppLightTheme({Key? key}) : super(key: key);
+  final _userData = UserData.getUserDataFromDB();
+
+  AppLightTheme({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AppBloc>(
-      create: (_) => AppBloc(),
-      child: MaterialApp(
-        title: 'Final Project',
-        theme: lightTheme,
-        home: _appView
-      )
+    return FutureBuilder<UserData>(
+        future: _userData,
+        builder: (BuildContext context, AsyncSnapshot<UserData> snapshot) {
+          if (!snapshot.hasData) {
+            return loader;
+          }
+          final data = snapshot.data!;
+          return BlocProvider<AppBloc>(
+              create: (_) => AppBloc(userData: data),
+              child: MaterialApp(
+                  title: 'Final Project',
+                  theme: lightTheme,
+                  home: _getAppView()
+          ));
+        }
     );
   }
 }
 
 class AppDarkTheme extends StatelessWidget {
-  const AppDarkTheme({Key? key}) : super(key: key);
+  final _userData = UserData.getUserDataFromDB();
+
+  AppDarkTheme({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AppBloc>(
-        create: (_) => AppBloc(),
-        child: MaterialApp(
-            title: 'Final Project',
-            theme: darkTheme,
-            home: _appView
-        )
+    return FutureBuilder<UserData>(
+        future: _userData,
+        builder: (BuildContext context, AsyncSnapshot<UserData> snapshot) {
+          if (!snapshot.hasData) {
+            return loader;
+          }
+          final data = snapshot.data!;
+          return BlocProvider<AppBloc>(
+              create: (_) => AppBloc(userData: data),
+              child: MaterialApp(
+                  title: 'Final Project',
+                  theme: darkTheme,
+                  home: _getAppView()
+          ));
+        }
     );
   }
 }
@@ -102,9 +106,9 @@ class App extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is LightThemeState) {
-            return const AppLightTheme();
+            return AppLightTheme();
           }
-          return const AppDarkTheme();
+          return AppDarkTheme();
         }
       )
     );

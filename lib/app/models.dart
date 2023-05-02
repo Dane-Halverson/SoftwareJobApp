@@ -5,23 +5,44 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 class UserData {
-  String firstName;
-  String lastName;
-  int age;
-  DateTime birthday;
-  String email;
+  String? firstName;
+  String? lastName;
+  int? age;
+  DateTime? birthday;
+  String? email;
+  String bio;
+  List<String> jobPreferences = <String>[];
 
   UserData({
-    required this.firstName,
-    required this.lastName,
-    required this.age,
-    required this.birthday,
-    required this.email
+    this.firstName,
+    this.lastName,
+    this.age,
+    this.birthday,
+    this.email,
+    this.bio = 'Your bio goes here.'
   }) {
     final now = DateTime.now();
-    if (birthday.month >= now.month && birthday.day >= now.day && (now.year - birthday.year) != age) {
-      age++;
+    if (age != null && birthday != null) {
+      int Age = age!;
+      DateTime Birthday = birthday!;
+      if (Birthday.month >= now.month && Birthday.day >= now.day && (now.year - Birthday.year) != Age) {
+        Age++;
+        age = Age;
+      }
     }
+  }
+
+  void addPreference(String preference) {
+    jobPreferences.add(preference);
+  }
+
+  void removePreference(String preference) {
+    int i = jobPreferences.indexOf(preference);
+    jobPreferences.removeAt(i);
+  }
+
+  bool hasPreference(String preference) {
+    return jobPreferences.contains(preference);
   }
 
   static Future<UserData> getUserDataFromDB() async {
@@ -31,16 +52,20 @@ class UserData {
       final snapshot = await userDoc.get();
       final userData = snapshot.data();
       if (userData != null) {
-        return UserData(
+        final data = UserData(
           firstName: userData['firstName'],
           lastName: userData['lastName'],
           age: userData['age'],
+          bio: userData['bio'],
           email: userData['email'],
           birthday: DateTime.fromMillisecondsSinceEpoch(userData['birthday']),
         );
+        for (var tag in userData['jobPreferences']) {
+          data.addPreference(tag);
+        }
+        return data;
       } else {
-        throw ErrorDescription(
-            'Something went wrong when loading the user data from DB');
+        return UserData();
       }
     }
     throw ErrorDescription('The user should have something in the db!');
