@@ -5,22 +5,27 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 class UserData {
-  String firstName;
-  String lastName;
-  int age;
-  DateTime birthday;
-  String email;
+  String? firstName;
+  String? lastName;
+  int? age;
+  DateTime? birthday;
+  String? email;
 
   UserData({
-    required this.firstName,
-    required this.lastName,
-    required this.age,
-    required this.birthday,
-    required this.email
+    this.firstName,
+    this.lastName,
+    this.age,
+    this.birthday,
+    this.email
   }) {
     final now = DateTime.now();
-    if (birthday.month >= now.month && birthday.day >= now.day && (now.year - birthday.year) != age) {
-      age++;
+    if (age != null && birthday != null) {
+      int Age = age!;
+      DateTime Birthday = birthday!;
+      if (Birthday.month >= now.month && Birthday.day >= now.day && (now.year - Birthday.year) != Age) {
+        Age++;
+        age = Age;
+      }
     }
   }
 
@@ -39,8 +44,7 @@ class UserData {
           birthday: DateTime.fromMillisecondsSinceEpoch(userData['birthday']),
         );
       } else {
-        throw ErrorDescription(
-            'Something went wrong when loading the user data from DB');
+        return UserData();
       }
     }
     throw ErrorDescription('The user should have something in the db!');

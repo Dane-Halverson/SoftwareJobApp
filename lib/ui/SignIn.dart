@@ -132,7 +132,9 @@ class _SignInStatefulWidgetState extends State<SignIn>{
                               ),]
                         ),
                         onPressed: () {
-                          //runApp(CreateAccountPage(key: super.key));
+                          context.read<AppBloc>().add(
+                            const GuestLoggedInEvent()
+                          );
                         },
                       ),
                     ],
