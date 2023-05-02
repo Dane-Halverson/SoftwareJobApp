@@ -1,8 +1,8 @@
+import 'package:final_project/app/bloc/app_events.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../app/bloc/app_blocs.dart';
-import '../app/bloc/app_events.dart';
 
 class CreateAccount extends StatelessWidget {
   @override
@@ -10,37 +10,37 @@ class CreateAccount extends StatelessWidget {
     return Scaffold(
       body: Center(
           child: Column(children: [
-        Expanded(
+            Expanded(
 
-            child: NotificationListener<OverscrollIndicatorNotification>(
-              onNotification: (overscroll) {
-                overscroll.disallowIndicator();
-                return true;
-              },
-              child: ListView(children: <Widget>[
-                const SizedBox(height: 50),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      TextButton(
-                          onPressed: () {
-                            BlocProvider.of<AppBloc>(context).add(
-                                const UserLoggedOutEvent()
-                            );
-                          },
-                          child: const Text('Back to sign in')),
-                    ]),
-                CreateAccountForm(key: super.key),
-                const SizedBox(height: 82),
-                Align(
-                  alignment: Alignment.center,
-                  child: Image.asset('assets/citysky.png'),
-                )
-              ])),
+              child: NotificationListener<OverscrollIndicatorNotification>(
+                  onNotification: (overscroll) {
+                    overscroll.disallowIndicator();
+                    return true;
+                  },
+                  child: ListView(children: <Widget>[
+                    const SizedBox(height: 50),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          TextButton(
+                              onPressed: () {
+                                BlocProvider.of<AppBloc>(context).add(
+                                    const UserLoggedOutEvent()
+                                );
+                              },
+                              child: const Text('Back to sign in')),
+                        ]),
+                    CreateAccountForm(key: super.key),
+                    const SizedBox(height: 82),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Image.asset('assets/citysky.png'),
+                    )
+                  ])),
             ),
 
-      ])),
+          ])),
     );
   }
 }

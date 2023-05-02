@@ -38,7 +38,7 @@ Future<Map<String, List<CityData>>> mapCitiesToState() async {
         city: cityName,
         meanSalaryAdjusted: data['Mean Software Developer Salary'],
         meanSalaryUnadjusted: data['Mean Unadjusted Salary'],
-        numberOfSoftwareJobs: data['Number Of Software Developer Jobs'],
+        numberOfSoftwareJobs: data['Number of Software Developer Jobs'],
         medianHomePrice: data['Median Home Price'],
         costOfLiving: data['Cost of Living avg'],
         rent: data['Rent avg'],

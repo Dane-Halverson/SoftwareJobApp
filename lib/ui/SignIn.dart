@@ -1,9 +1,10 @@
+import 'package:final_project/app/bloc/app_blocs.dart';
+import 'package:final_project/app/bloc/app_events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../app/bloc/app_blocs.dart';
-import '../app/bloc/app_events.dart';
 
 class SignIn extends StatelessWidget {
+  const SignIn({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +45,7 @@ class SignInStateful extends StatefulWidget{
   const SignInStateful({super.key});
 
   @override
-  State<SignInStateful> createState() =>
-      _SignInStatefulWidgetState();
+  State<SignInStateful> createState() => _SignInStatefulWidgetState();
 }
 
 class _SignInStatefulWidgetState extends State<SignInStateful>{
@@ -59,7 +59,11 @@ class _SignInStatefulWidgetState extends State<SignInStateful>{
   @override
   void initState(){
     super.initState();
-    //
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override

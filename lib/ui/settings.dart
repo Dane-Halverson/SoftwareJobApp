@@ -1,3 +1,4 @@
+import 'package:final_project/app/bloc/app_events.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -5,13 +6,13 @@ import 'package:flutter/material.dart';
 import '../app/bloc/app_blocs.dart';
 import '../app/bloc/app_events.dart';
 
+import '../app/bloc/app_blocs.dart';
 
 class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SettingsStatefulWidget(key: super.key),
+    return Scaffold(
+      body: SettingsStatefulWidget(key: super.key),
     );
   }
 }
@@ -31,7 +32,6 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     late String? email = user?.email != null ? user?.email! : '';
     return SettingsList(
       sections: [
@@ -131,6 +131,4 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
         const ChangedToLightThemeEvent()
     );
   }
-
-
 }

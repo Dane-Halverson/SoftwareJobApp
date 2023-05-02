@@ -7,7 +7,8 @@ import 'app_events.dart';
 import 'app_state.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
-  AppBloc() : super(AppState.loadAuthState()) {
+  UserData userData;
+  AppBloc({required this.userData}) : super(AppState.loadAuthState()) {
     // since the user data would be null here, we can use a future builder to build the pages requiring the user data class if the Authorized state is detected with null data
     on<UserRegisteredEvent>((UserRegisteredEvent event, Emitter<AppState> emit) async {
       final auth = FirebaseAuth.instance;
@@ -22,15 +23,16 @@ class AppBloc extends Bloc<AppEvent, AppState> {
             'birthday': event.birthday.millisecondsSinceEpoch,
             'email': event.email,
           });
+          userData = UserData(
+            firstName: event.firstName,
+            lastName: event.lastName,
+            age: event.age,
+            birthday: event.birthday,
+            email: event.email
+          );
           emit(
             AuthorizedState(
-              userData: UserData(
-                firstName: event.firstName,
-                lastName: event.lastName,
-                age: event.age,
-                birthday: event.birthday,
-                email: event.email
-              )
+              userData: userData
             )
           );
         }
@@ -71,7 +73,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<GuestLoggedInEvent>((GuestLoggedInEvent event, Emitter<AppState> emit) async {
       final auth = FirebaseAuth.instance;
       try {
-        await auth.signInAnonymously();
+        // await auth.signInAnonymously();
 
         emit(const AuthedAsGuestState());
       } on FirebaseAuthException catch(err) {
