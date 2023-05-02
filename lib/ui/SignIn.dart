@@ -4,10 +4,7 @@ import 'themes.dart';
 class SignIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Builder(
-            builder: (context) => Scaffold(
+    return Scaffold(
                 body: Center(
                     child: ListView(children: <Widget>[
                       const SizedBox(
@@ -78,7 +75,7 @@ class SignIn extends StatelessWidget {
                         ],
                       )),
                       Image.asset('assets/citysky.png')
-                    ])))));
+                    ])));
   }
 }
 
