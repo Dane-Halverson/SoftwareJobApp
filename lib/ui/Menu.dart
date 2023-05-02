@@ -1,8 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/ui/CostEstimatorView.dart';
 import 'package:final_project/ui/CreateAccount.dart';
 import 'package:final_project/ui/VideosView.dart';
+import 'package:final_project/ui/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
+import 'package:flutter_animated_icons/icons8.dart';
+import 'package:flutter_animated_icons/lottiefiles.dart';
+import 'package:flutter_animated_icons/useanimations.dart';
+import 'package:lottie/lottie.dart';
 
 class Menu extends StatelessWidget{
   const Menu({super.key});
@@ -27,17 +33,30 @@ class _MenuStatefulWidgetState extends State<MenuStatefulWidget> with SingleTick
   final List<Widget> _pages = [];
   int _value = 0;
 
+  late AnimationController _settingController;
+
+
   //pages
   final _videosPage = VideosView();
   final _estimatorPage = CostEstimatorView();
-  final _createAccountPage = CreateAccount();
+  final _settingsPage = SettingsView();
 
   @override
   void initState() {
     super.initState();
     _pages.add(_videosPage);
     _pages.add(_estimatorPage);
-    _pages.add(_createAccountPage);
+    _pages.add(_settingsPage);
+
+    _settingController = AnimationController(vsync: this, duration: const Duration(seconds: 1));
+
+  }
+
+  @override
+  void dispose() {
+    _settingController.dispose();
+
+    super.dispose();
   }
 
 
@@ -54,46 +73,53 @@ class _MenuStatefulWidgetState extends State<MenuStatefulWidget> with SingleTick
                   title: Text("test",
                       style: TextStyle(
                           fontSize: 22, fontWeight: FontWeight.w700))),
-              slider: Container(color: Colors.blue,
-               child: Padding(
-                 padding: const EdgeInsets.symmetric(vertical: 50),
-                 child: Column(
-                 crossAxisAlignment: CrossAxisAlignment.center,
-                 mainAxisAlignment: MainAxisAlignment.start,
-                 children:
-                 [
-                   TextButton(
-                       onPressed: switchToVideos,
-                       child: const Text("Videos",
-                         style: TextStyle(
-                             color: Colors.white,
-                             fontSize: 30
-                         ),
+              slider: Expanded(
+                child: Container(color: Colors.blue,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 50),
+                    child:
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children:
+                      [
+                        TextButton(
+                            onPressed: switchToVideos,
+                            child: const Text("Videos",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 30
+                              ),
 
-                       )),
-                   TextButton(
-                       onPressed: switchToEstimator,
-                       child: const Text("Cost Estimator",
-                         style: TextStyle(
-                             color: Colors.white,
-                             fontSize: 30
-                         ),
+                            )),
+                        TextButton(
+                            onPressed: switchToEstimator,
+                            child: const Text("Cost Estimator",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 30
+                              ),
 
-                       )),
-                   TextButton(
-                       onPressed: switchToCreateAccount,
-                       child: const Text("Cost Estimator",
-                         style: TextStyle(
-                             color: Colors.white,
-                             fontSize: 30
-                         ),
+                            )),
+                        Padding(padding: EdgeInsets.only(top: 100),
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child:  IconButton(
+                              splashRadius: 50,
+                              iconSize: 70,
+                              onPressed: switchToSettings,
+                              icon: const Icon(Icons.settings, color: Colors.white,),
+                            ),
 
-                       ))
-                 ],
-               ),
-               ),
+                          ),
+                        )
 
-              ),
+                      ],
+                    ),
+                  ),
+
+                ),
+              ) ,
               child: _pages.elementAt(_value),
             ),
           )
@@ -114,11 +140,13 @@ class _MenuStatefulWidgetState extends State<MenuStatefulWidget> with SingleTick
     });
   }
 
-  void switchToCreateAccount() {
+  void switchToSettings() {
     setState(() {
-      _value = _pages.indexOf(_createAccountPage);
+      _value = _pages.indexOf(_settingsPage);
     });
   }
+
+
 
 }
 
