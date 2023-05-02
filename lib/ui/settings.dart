@@ -1,14 +1,17 @@
+import 'package:final_project/app/bloc/app_events.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter/material.dart';
+
+import '../app/bloc/app_blocs.dart';
 
 
 class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SettingsStatefulWidget(key: super.key),
+    return Scaffold(
+      body: SettingsStatefulWidget(key: super.key),
     );
   }
 }
@@ -27,70 +30,49 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
   Widget build(BuildContext context) {
 
     late String? email = user?.email != null ? user?.email! : '';
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Settings"),
-      ),
-      body: SettingsList(
-        sections: [
-          SettingsSection(
-            title: Text('Account'),
-            tiles: <SettingsTile>[
-              SettingsTile(
-                leading: Icon(Icons.email),
-                title: Text('Account Email'),
-                value: Text(email!),
-              ),
-              SettingsTile(
-                leading: Icon(Icons.logout),
-                title: Text('Sign out'),
-                onPressed: (_) {
-                  _onSignOut();
-                },
-              ),
-              SettingsTile(
-                leading: Icon(Icons.password),
-                title: Text('Reset Password'),
-                onPressed: (_) {
-                  _onSignOut();
-                },
-              ),
-              SettingsTile(
-                leading: Icon(Icons.delete),
-                title: Text(
-                  'Delete Account',
-                  style: TextStyle(
-                    color: Colors.red,
-                  ),
+    return SettingsList(
+      sections: [
+        SettingsSection(
+          title: Text('Account'),
+          tiles: <SettingsTile>[
+            SettingsTile(
+              leading: const Icon(Icons.email),
+              title: const Text('Account Email'),
+              value: Text(email!),
+            ),
+            SettingsTile(
+              leading: const Icon(Icons.logout),
+              title:  const Text('Sign out'),
+              onPressed: (_) {
+                context.read<AppBloc>().add(
+                    const UserLoggedOutEvent()
+                );
+              },
+            ),
+            SettingsTile(
+              leading: const Icon(Icons.password),
+              title: const Text('Reset Password'),
+              onPressed: (_) {
+
+              },
+            ),
+            SettingsTile(
+              leading: const Icon(Icons.delete),
+              title: Text(
+                'Delete Account',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.error,
                 ),
-                onPressed: (_) {
-                  _onDeleteAccount();
-                },
               ),
-              SettingsTile(
-                  leading: Icon(Icons.add_circle_outlined),
-                  title: Text('Add Account'),
-                  onPressed: (_) {
-                    _onSignOut();
-                  }
-              ),
-            ],
-          ),
-        ],
-      ),
+              onPressed: (_) {
+                context.read<AppBloc>().add(
+                  const UserDeletedAccountEvent()
+                );
+              },
+            ),
+          ],
+        ),
+      ],
     );
-  }
-
-  _onSignOut() {
-    instance.signOut();
-  }
-
-
-  _onDeleteAccount() {
-    user?.delete();
-  }
-
-  toSignIn() {
-    throw UnimplementedError();
   }
 }

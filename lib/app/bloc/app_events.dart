@@ -43,11 +43,7 @@ class UserLoggedOutEvent implements AppEvent {
 
 @immutable
 class UserDeletedAccountEvent implements AppEvent {
-  final String userId; // This is so that the user document can be deleted from Firestore
-
-  const UserDeletedAccountEvent({
-    required this.userId,
-  });
+  const UserDeletedAccountEvent();
 }
 
 @immutable
