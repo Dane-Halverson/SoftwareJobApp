@@ -102,12 +102,17 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
 
                 },
               ),
-              SettingsTile(
-                title: Text('Job Database Info Authors'),
-                description: Text('Bruno Bonfrisco and Franco Seveso'),
-                leading: Icon(Icons.info),
-              )
-            ])
+
+            ]),
+        SettingsSection(
+            title: const Text('Credits'),
+            tiles: [
+          SettingsTile(
+            title: const Text('Job Database Info Authors'),
+            description: const Text('Bruno Bonfrisco and Franco Seveso'),
+            leading: const Icon(Icons.info),
+          )
+        ])
       ],
     );
   }
