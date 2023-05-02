@@ -100,6 +100,9 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> with Ticker
                         _controllers[i][index].reset();
                         _controllers[i][index].animateTo(0.6);
                       }
+                      else {
+                        _controllers[i][index].reset();
+                      }
                       return videosList[i].videos.isNotEmpty ? GestureDetector(
 
                           onTap: () {
@@ -141,7 +144,7 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> with Ticker
                                         .isFavorite) {
                                       _controllers[i][index].reset();
                                       _controllers[i][index].animateTo(0.6);
-                                      setState(() {
+
                                         videosList[i].videos[index].isFavorite =
                                         !videosList[i].videos[index].isFavorite;
                                         if (videosList[i].videos[index]
@@ -152,7 +155,7 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> with Ticker
                                             (videosList[i].videos[index].id,
                                               videosList[i].videos[index].title);
                                         }
-                                      });
+
                                     } else {
                                       _controllers[i][index].reverse();
                                       videosList[i].videos[index].isFavorite =
