@@ -30,7 +30,9 @@ class VideosStatefulWidget extends StatefulWidget {
 }
 
 class _VideosStatefulWidgetState extends State<VideosStatefulWidget> with TickerProviderStateMixin{
-  late AnimationController _favoriteController;
+
+  final List<List<AnimationController>> _controllers = [];
+
 
   final VideosModel model = VideosModel();
 
@@ -45,13 +47,16 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> with Ticker
   @override
   void initState() {
     super.initState();
-    _favoriteController = AnimationController(vsync: this, duration: const Duration(seconds: 1));
     _videos = VideosModel.getVideosList();
   }
 
   @override
   void dispose() {
-    _favoriteController.dispose();
+    for (var l in _controllers) {
+      for (var c in l) {
+        c.dispose();
+      }
+    }
     super.dispose();
   }
 
@@ -87,13 +92,16 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> with Ticker
             }
 
             for (int i = 0; i < videosList.length; ++i) {
+              _controllers.add([]);
               _pages.add(
                   ListView(
                     children: List<Widget>.generate(
                         videosList[i].videos.length, (int index) {
+                      _controllers[i].add(AnimationController(vsync: this, duration: const Duration(seconds: 1))
+                      );
                       if (videosList[i].videos[index].isFavorite) {
-                        _favoriteController.reset();
-                        _favoriteController.animateTo(0.6);
+                        _controllers[i][index].reset();
+                        _controllers[i][index].animateTo(0.6);
                       }
                       return videosList[i].videos.isNotEmpty ? GestureDetector(
 
@@ -134,8 +142,8 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> with Ticker
                                   onPressed: () {
                                     if (!videosList[i].videos[index]
                                         .isFavorite) {
-                                      _favoriteController.reset();
-                                      _favoriteController.animateTo(0.6);
+                                      _controllers[i][index].reset();
+                                      _controllers[i][index].animateTo(0.6);
                                       setState(() {
                                         videosList[i].videos[index].isFavorite =
                                         !videosList[i].videos[index].isFavorite;
@@ -148,14 +156,14 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> with Ticker
                                         }
                                       });
                                     } else {
-                                      _favoriteController.reverse();
+                                      _controllers[i][index].reverse();
                                       videosList[i].videos[index].isFavorite =
                                       !videosList[i].videos[index].isFavorite;
                                       VideosModel.rmFavorite(videosList[i].videos[index].id);
                                     }
                                   },
                                   icon: Lottie.asset(Icons8.heart_color,
-                                      controller: _favoriteController),
+                                      controller: _controllers[i][index]),
 
 
                                 ),
