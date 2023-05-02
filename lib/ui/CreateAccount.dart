@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'themes.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../app/bloc/app_blocs.dart';
+import '../app/bloc/app_events.dart';
 
 class CreateAccount extends StatelessWidget {
   @override
@@ -16,49 +18,21 @@ class CreateAccount extends StatelessWidget {
                 return true;
               },
               child: ListView(children: <Widget>[
+                const SizedBox(height: 50),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       TextButton(
-                          onPressed: () {}, child: const Text('Back to sign in')),
+                          onPressed: () {
+                            BlocProvider.of<AppBloc>(context).add(
+                                const UserLoggedOutEvent()
+                            );
+                          },
+                          child: const Text('Back to sign in')),
                     ]),
                 CreateAccountForm(key: super.key),
-                const SizedBox(width: 20),
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(100.0, 25, 100, 30),
-                    child: Column(
-                      children: [
-                        ElevatedButton(
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Text(
-                                  'Create account',
-                                ),
-                                Icon(Icons.keyboard_arrow_right, size: 24.0),
-                              ]),
-                          onPressed: () {
-                            //runApp(CreateAccountPage(key: super.key));
-                          },
-                        ),
-                        TextButton(
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Text(
-                                  'Continue as Guest ',
-                                ),
-                                Icon(Icons.person, size: 24.0),
-                              ]),
-                          onPressed: () {
-                            //runApp(CreateAccountPage(key: super.key));
-                          },
-                        ),
-
-                      ],
-                    )),
-                SizedBox(height: 112,),
+                const SizedBox(height: 82),
                 Align(
                   alignment: Alignment.center,
                   child: Image.asset('assets/citysky.png'),
@@ -82,6 +56,16 @@ class _CreateAccountFormWidgetState extends State<CreateAccountForm> {
   var passwordVis = true;
   final TextEditingController _dateInput = TextEditingController();
   DateTime birthday = DateTime.now();
+  final DateTime _currentDate = DateTime.now();
+
+  String _pass1 = '';
+  String _pass2 = '';
+
+  String _firstName = '';
+  String _lastName = '';
+  String _email = '';
+  String _password = '';
+  var age = 0;
 
   @override
   void initState() {
@@ -100,6 +84,9 @@ class _CreateAccountFormWidgetState extends State<CreateAccountForm> {
             children: [
               Expanded(
                 child: TextFormField(
+                  onChanged: (value){
+                    _firstName = value.toString();
+                  },
                   decoration: const InputDecoration(
                     icon: Icon(Icons.person),
                     labelText: 'First Name',
@@ -108,6 +95,9 @@ class _CreateAccountFormWidgetState extends State<CreateAccountForm> {
               ),
               Expanded(
                 child: TextFormField(
+                  onChanged: (value){
+                    _lastName = value.toString();
+                  },
                   decoration: const InputDecoration(
                     labelText: 'Last Name',
                   ),
@@ -132,7 +122,9 @@ class _CreateAccountFormWidgetState extends State<CreateAccountForm> {
 
               if (pickedDate != null) {
                 birthday =
-                    pickedDate; //pickedDate output format => 2021-03-10 00:00:00.000
+                    pickedDate;
+                age = _currentDate.year - birthday.year;
+                //pickedDate output format => 2021-03-10 00:00:00.000
                 String formattedDate =
                     DateFormat('MM/dd/yyyy').format(pickedDate);
                 print(
@@ -149,12 +141,18 @@ class _CreateAccountFormWidgetState extends State<CreateAccountForm> {
             },
           ),
           TextFormField(
+            onChanged: (value){
+              _email = value.toString();
+            },
             decoration: const InputDecoration(
               icon: Icon(Icons.email_sharp),
               labelText: 'E-mail',
             ),
           ),
           TextFormField(
+            onChanged: (value){
+              _pass1 = value.toString();
+            },
             obscureText: passwordVis,
             decoration: InputDecoration(
                 icon: const Icon(Icons.password_sharp),
@@ -171,21 +169,61 @@ class _CreateAccountFormWidgetState extends State<CreateAccountForm> {
                     })),
           ),
           TextFormField(
+            onChanged: (value){
+              _pass2 = value.toString();
+            },
             obscureText: passwordVis,
-            decoration: InputDecoration(
-                icon: const Icon(Icons.password_sharp),
+            decoration: const InputDecoration(
+                icon: Icon(Icons.password_sharp),
                 labelText: 'Re-enter Password',
-                suffixIcon: IconButton(
-                    icon: Icon(
-                        passwordVis ? Icons.visibility : Icons.visibility_off),
-                    onPressed: () {
-                      setState(
-                        () {
-                          passwordVis = !passwordVis;
-                        },
-                      );
-                    })),
+                ),
           ),
+          const SizedBox(width: 20),
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 26),
+              child: Column(
+                children: [
+                  ElevatedButton(
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Text(
+                            'Create account',
+                          ),
+                          Icon(Icons.keyboard_arrow_right, size: 24.0),
+                        ]),
+                    onPressed: () {
+                      if (_pass1 == _pass2) {
+                        _password = _pass1;
+                        BlocProvider.of<AppBloc>(context).add(
+                            UserRegisteredEvent(
+                                firstName: _firstName,
+                                lastName: _lastName,
+                                age: age,
+                                birthday: birthday,
+                                email: _email,
+                                password: _password));
+                      }
+                    },
+                  ),
+                  TextButton(
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Text(
+                            'Continue as Guest ',
+                          ),
+                          Icon(Icons.person, size: 24.0),
+                        ]),
+                    onPressed: () {
+                      BlocProvider.of<AppBloc>(context).add(
+                          const GuestLoggedInEvent()
+                      );
+                    },
+                  ),
+
+                ],
+              )),
         ],
       ),
     );
