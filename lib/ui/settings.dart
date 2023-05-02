@@ -29,7 +29,7 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
   @override
   Widget build(BuildContext context) {
     final userData = context.read<AppBloc>().userData;
-    late String? email = userData.email;
+    late String? email = userData.email!;
     return SettingsList(
       sections: [
         SettingsSection(

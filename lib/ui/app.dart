@@ -25,34 +25,16 @@ BlocConsumer<AppBloc, AppState> _getAppView() {
       },
       builder: (context, state) {
         if (state is AuthorizedState) {
-          if (state.userData == null) {
-            return FutureBuilder<UserData>(
-                future: UserData.getUserDataFromDB(),
-                builder: (BuildContext context, AsyncSnapshot<UserData> snapshot) {
-                  final data = snapshot.data;
-                  if (!snapshot.hasData) {
-                    return loader;
-                  }
-                  if (data != null) {
-                    return const Menu();
-                  }
-                  else {
-                    return loader;
-                  }
-                }
-            );
-          }
           return const Menu();
         }
         if (state is UnauthorizedState) {
           return const SignIn();
         }
         if (state is AuthedAsGuestState) {
-          // return LoggedInView()
-          return const Text('Guest view');
+          return const GuestMenu();
         }
         if (state is RegisteringState) {
-          return CreateAccount();
+          return const CreateAccount();
         }
         throw ErrorDescription('A non-valid state was passed when building the app view!');
       }
@@ -67,25 +49,20 @@ class AppLightTheme extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<UserData>(
-      future: _userData,
-      builder: (BuildContext context, AsyncSnapshot<UserData> snapshot) {
-        final data = snapshot.data;
-        if (!snapshot.hasData) {
-          return loader;
-        }
-        if (data != null) {
+        future: _userData,
+        builder: (BuildContext context, AsyncSnapshot<UserData> snapshot) {
+          if (!snapshot.hasData) {
+            return loader;
+          }
+          final data = snapshot.data!;
           return BlocProvider<AppBloc>(
-            create: (_) => AppBloc(userData: data),
-            child: MaterialApp(
-              title: 'Final Project',
-              theme: lightTheme,
-              home: _getAppView()
+              create: (_) => AppBloc(userData: data),
+              child: MaterialApp(
+                  title: 'Final Project',
+                  theme: lightTheme,
+                  home: _getAppView()
           ));
         }
-        else {
-          return loader;
-        }
-      }
     );
   }
 }
@@ -100,22 +77,17 @@ class AppDarkTheme extends StatelessWidget {
     return FutureBuilder<UserData>(
         future: _userData,
         builder: (BuildContext context, AsyncSnapshot<UserData> snapshot) {
-          final data = snapshot.data;
           if (!snapshot.hasData) {
             return loader;
           }
-          if (data != null) {
-            return BlocProvider<AppBloc>(
-                create: (_) => AppBloc(userData: data),
-                child: MaterialApp(
-                    title: 'Final Project',
-                    theme: lightTheme,
-                    home: _getAppView()
-                ));
-          }
-          else {
-            return loader;
-          }
+          final data = snapshot.data!;
+          return BlocProvider<AppBloc>(
+              create: (_) => AppBloc(userData: data),
+              child: MaterialApp(
+                  title: 'Final Project',
+                  theme: lightTheme,
+                  home: _getAppView()
+          ));
         }
     );
   }

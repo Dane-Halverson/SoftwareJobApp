@@ -1,4 +1,5 @@
 import 'package:final_project/app/bloc/app_blocs.dart';
+import 'package:final_project/app/bloc/app_events.dart';
 import 'package:final_project/app/models.dart';
 import 'package:final_project/ui/CostEstimatorView.dart';
 import 'package:final_project/ui/VideosView.dart';
@@ -52,10 +53,22 @@ class _MenuStatefulWidgetState extends State<Menu> with SingleTickerProviderStat
                child: Padding(
                  padding: const EdgeInsets.symmetric(vertical: 50),
                  child: Column(
-                 crossAxisAlignment: CrossAxisAlignment.center,
+                 crossAxisAlignment: CrossAxisAlignment.start,
                  mainAxisAlignment: MainAxisAlignment.start,
                  children:
                  [
+                   TextButton.icon(
+                       onPressed: () {
+                         setState(() {
+                           // _value = 0;
+                         });
+                       },
+                       label: const Text('Jobs',),
+                       icon: const Icon(
+                           Icons.cases_rounded,
+                           size: 32.0
+                       )
+                   ),
                    TextButton.icon(
                      onPressed: () {
                        setState(() {
@@ -64,8 +77,8 @@ class _MenuStatefulWidgetState extends State<Menu> with SingleTickerProviderStat
                      },
                      label: const Text('Browse Cities',),
                      icon: const Icon(
-                       Icons.browse_gallery,
-                       size: 32.0
+                         Icons.browse_gallery,
+                         size: 32.0
                      )
                    ),
                    TextButton.icon(
@@ -113,6 +126,100 @@ class _MenuStatefulWidgetState extends State<Menu> with SingleTickerProviderStat
     setState(() {
       _value = _pages.indexOf(_videosPage);
     });
+  }
+
+  void switchToEstimator() {
+    setState(() {
+      _value = _pages.indexOf(_estimatorPage);
+    });
+  }
+
+}
+
+class GuestMenu extends StatefulWidget {
+  const GuestMenu({super.key});
+
+  @override
+  State<GuestMenu> createState() => _GuestMenuStatefulWidgetState();
+}
+
+class _GuestMenuStatefulWidgetState extends State<GuestMenu> with SingleTickerProviderStateMixin{
+
+  final List<Widget> _pages = [];
+  int _value = 0;
+
+  //pages
+  final _browsePage = const CityStatsBrowser();
+  final _estimatorPage = const CostEstimatorView();
+  final _pageTitles = <String>['Videos', 'City Cost Estimation'];
+
+  @override
+  void initState() {
+    super.initState();
+    _pages.add(_browsePage);
+    _pages.add(_estimatorPage);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return
+      Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.only(top: 52),
+            child: SliderDrawer(
+              appBar: SliderAppBar(
+                  title: Text(
+                    _pageTitles[_value],
+                    style: Theme.of(context).textTheme.labelLarge,
+                  )
+              ),
+              slider: Container(color: Theme.of(context).colorScheme.background,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 50),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children:
+                    [
+                      TextButton(
+                        child: const Text('Create Account or Login'),
+                        onPressed: () => {
+                          context.read<AppBloc>().add(
+                            const GuestWantsToRegisterEvent()
+                          )
+                        },
+                      ),
+                      TextButton.icon(
+                          onPressed: () {
+                            setState(() {
+                              _value = 0;
+                            });
+                          },
+                          label: const Text('Browse Cities',),
+                          icon: const Icon(
+                              Icons.money,
+                              size: 32.0
+                          )
+                      ),
+                      TextButton.icon(
+                          onPressed: switchToEstimator,
+                          label: const Text('Cost Estimator',),
+                          icon: const Icon(
+                              Icons.money,
+                              size: 32.0
+                          )
+                      ),
+                    ],
+                  ),
+                ),
+
+              ),
+              child: _pages.elementAt(_value),
+            ),
+          )
+      );
+
+
   }
 
   void switchToEstimator() {

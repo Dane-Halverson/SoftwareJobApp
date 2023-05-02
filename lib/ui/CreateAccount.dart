@@ -1,11 +1,35 @@
+import 'package:final_project/app/bloc/app_events.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../app/bloc/app_blocs.dart';
 import 'themes.dart';
 import 'package:intl/intl.dart';
 
+class CreateAccount extends StatefulWidget {
+  const CreateAccount({super.key});
 
-class CreateAccount extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
+  State<CreateAccount> createState() => _CreateAccountFormWidgetState();
+}
+
+class _CreateAccountFormWidgetState extends State<CreateAccount>{
+
+  var passwordVis = true;
+  final TextEditingController _dateInput = TextEditingController();
+  final _firstNameInput = TextEditingController();
+  final _lastNameInput = TextEditingController();
+  final _emailInput = TextEditingController();
+  final _passwordInput = TextEditingController();
+  final _reenterPasswordInput = TextEditingController();
+  DateTime birthday = DateTime.now();
+
+  @override
+  void initState(){
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context){
     return Scaffold(
         body: Center(
             child: ListView(children: <Widget>[
@@ -16,10 +40,76 @@ class CreateAccount extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    TextButton(onPressed: (){},
+                    TextButton(onPressed: (){
+                      context.read<AppBloc>().add(
+                        const UserLoggedOutEvent()
+                      );
+                    },
                         child: const Text('Back to sign in')),]
               ),
-              CreateAccountForm(key: super.key),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          controller: _firstNameInput,
+                          decoration: const InputDecoration(
+                            icon: Icon(Icons.person),
+                            labelText: 'First Name',
+                          ),),
+                      ),
+                      Expanded(
+                        child: TextFormField(
+                          controller: _lastNameInput,
+                          decoration: const InputDecoration(
+                            labelText: 'Last Name',
+                          ),),
+                      )
+                    ],
+                  ),
+                  TextFormField(
+                    controller: _emailInput,
+                    decoration: const InputDecoration(
+                      icon: Icon(Icons.email_sharp),
+                      labelText: 'E-mail',
+                    ),),
+                  TextFormField(
+                    controller: _passwordInput,
+                    obscureText: passwordVis,
+                    decoration: InputDecoration(
+                        icon: const Icon(Icons.password_sharp),
+                        labelText: 'Password',
+                        suffixIcon: IconButton(
+                            icon: Icon(
+                                passwordVis ? Icons.visibility : Icons.visibility_off),
+                            onPressed: () {
+                              setState(() { passwordVis = !passwordVis; },
+                              );
+                            })
+                    ),
+                  ),
+                  TextFormField(
+                    controller: _reenterPasswordInput,
+                    obscureText: passwordVis,
+                    decoration: InputDecoration(
+                        icon: const Icon(Icons.password_sharp),
+                        labelText: 'Re-enter Password',
+                        suffixIcon: IconButton(
+                            icon: Icon(
+                                passwordVis ? Icons.visibility : Icons.visibility_off),
+                            onPressed: () {
+                              setState(() { passwordVis = !passwordVis; },
+                              );
+                            })
+                    ),
+                  ),
+                ],
+              ) ,
+            ),
               const SizedBox(width: 20),
               Padding(
                   padding: const EdgeInsets.fromLTRB(100.0,25,100,30),
@@ -37,7 +127,14 @@ class CreateAccount extends StatelessWidget {
                                   size: 24.0),]
                         ),
                         onPressed: () {
-                          //runApp(CreateAccountPage(key: super.key));
+                          final firstName = _firstNameInput.value.text;
+                          final lastName = _firstNameInput.value.text;
+                          final password = _passwordInput.value.text;
+                          final email = _emailInput.value.text;
+                          final age = birthday.year - DateTime.now().year;
+                          context.read<AppBloc>().add(
+                            UserRegisteredEvent(firstName: firstName, lastName: lastName, age: age, birthday: birthday, email: email, password: password)
+                          );
                         },
                       ),
                       TextButton(
@@ -51,127 +148,15 @@ class CreateAccount extends StatelessWidget {
                                   size: 24.0),]
                         ),
                         onPressed: () {
-                          //runApp(CreateAccountPage(key: super.key));
+                          context.read<AppBloc>().add(
+                            const GuestLoggedInEvent()
+                          );
                         },
                       ),
                     ],
                   )),
               Image.asset('assets/citysky.png')
             ])));
-  }
-}
-
-class CreateAccountForm extends StatefulWidget{
-  const CreateAccountForm({super.key});
-
-  @override
-  State<CreateAccountForm> createState() =>
-      _CreateAccountFormWidgetState();
-}
-
-class _CreateAccountFormWidgetState extends State<CreateAccountForm>{
-
-  var passwordVis = true;
-  final TextEditingController _dateInput = TextEditingController();
-  DateTime birthday = DateTime.now();
-
-  @override
-  void initState(){
-    super.initState();
-    //
-  }
-
-  @override
-  Widget build(BuildContext context){
-
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            children: [
-              TextFormField(
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.person),
-                  labelText: 'First Name',
-                ),),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Last Name',
-                ),),
-            ],
-          ),
-          TextField(
-            controller: _dateInput,
-            //editing controller of this TextField
-            decoration: InputDecoration(
-              labelText:
-              "Enter Birthday",
-            ),
-            readOnly: true,
-            onTap: () async {
-              DateTime? pickedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(1900),
-                  //DateTime.now() - not to allow to choose before today.
-                  lastDate: DateTime.now());
-
-
-              if (pickedDate != null) {
-                birthday = pickedDate;//pickedDate output format => 2021-03-10 00:00:00.000
-                String formattedDate =
-                DateFormat('MM/dd/yyyy')
-                    .format(pickedDate);
-                print(
-                    formattedDate); //formatted date output using intl package =>  2021-03-16
-                //you can implement different kind of Date Format here according to your requirement
-
-                setState(() {
-                  _dateInput.text = formattedDate; //set output date to TextField value.
-                });
-              } else {
-                print("Date is not selected");
-              }
-            },
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              icon: Icon(Icons.email_sharp),
-              labelText: 'E-mail',
-            ),),
-          TextFormField(
-            obscureText: passwordVis,
-            decoration: InputDecoration(
-                icon: const Icon(Icons.password_sharp),
-                labelText: 'Password',
-                suffixIcon: IconButton(
-                    icon: Icon(
-                        passwordVis ? Icons.visibility : Icons.visibility_off),
-                    onPressed: () {
-                      setState(() { passwordVis = !passwordVis; },
-                      );
-                    })
-            ),
-          ),
-          TextFormField(
-            obscureText: passwordVis,
-            decoration: InputDecoration(
-                icon: const Icon(Icons.password_sharp),
-                labelText: 'Re-enter Password',
-                suffixIcon: IconButton(
-                    icon: Icon(
-                        passwordVis ? Icons.visibility : Icons.visibility_off),
-                    onPressed: () {
-                      setState(() { passwordVis = !passwordVis; },
-                      );
-                    })
-            ),
-          ),
-        ],
-      ) ,
-    );
   }
 
   DateTime getBirthday() {
