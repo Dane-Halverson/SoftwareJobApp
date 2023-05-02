@@ -15,10 +15,7 @@ class VideosView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: VideosStatefulWidget(key: super.key),
-    );
+    return VideosStatefulWidget(key: super.key);
   }
 }
 
@@ -149,6 +146,7 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> with Ticker
                                         !videosList[i].videos[index].isFavorite;
                                         if (videosList[i].videos[index]
                                             .isFavorite) {
+
                                           videosList[0].videos.add(videosList[i].videos[index]);
                                           VideosModel.addFavorite
                                             (videosList[i].videos[index].id,

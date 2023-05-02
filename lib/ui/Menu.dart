@@ -131,7 +131,7 @@ class _MenuStatefulWidgetState extends State<Menu> with SingleTickerProviderStat
                             splashRadius: 50,
                             iconSize: 70,
                             onPressed: switchToSettings,
-                            icon: const Icon(Icons.settings, color: Colors.white,
+                            icon: const Icon(Icons.settings,
                           ),
                       ),
                     ),
