@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter/material.dart';
+import '../app/bloc/app_blocs.dart';
+import '../app/bloc/app_events.dart';
 
 
 class SettingsView extends StatelessWidget {
@@ -112,12 +115,22 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
   }
 
   toSignIn() {
-    //throw UnimplementedError();
+    BlocProvider.of<AppBloc>(context).add(
+        const UserLoggedOutEvent()
+    );
   }
 
-  void switchToDark() {}
+  void switchToDark() async {
+    BlocProvider.of<ThemeBloc>(context).add(
+        const ChangedToDarkThemeEvent()
+    );
+  }
 
-  void switchToLight() {}
+  void switchToLight() async {
+    BlocProvider.of<ThemeBloc>(context).add(
+        const ChangedToLightThemeEvent()
+    );
+  }
 
 
 }
