@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'themes.dart';
+import 'CreateAccount.dart';
 
 class SignIn extends StatelessWidget {
   @override
@@ -23,7 +24,9 @@ class SignIn extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                         const Text('New?'),
-                        TextButton(onPressed: (){},
+                        TextButton(onPressed: (){
+
+                        },
                             child: const Text('Create Account')),]
                       ),
                       SignInStateful(key: super.key),
@@ -40,7 +43,7 @@ class SignIn extends StatelessWidget {
                       ),
                       const SizedBox(width: 20),
                     Padding(
-                        padding: const EdgeInsets.fromLTRB(100.0,25,100,30),
+                        padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 26),
                         child:
                       Column(
                         children: [
@@ -64,9 +67,7 @@ class SignIn extends StatelessWidget {
                                 children: const [
                                   Text(
                                     'Continue as Guest ',
-                                  ),
-                                  Icon(Icons.person,
-                                      size: 24.0),]
+                                  ),]
                             ),
                             onPressed: () {
                               //runApp(CreateAccountPage(key: super.key));
