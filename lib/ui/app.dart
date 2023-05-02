@@ -5,6 +5,8 @@ import 'package:final_project/ui/Menu.dart';
 import 'package:final_project/ui/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'SignIn.dart';
+import 'CreateAccount.dart';
 
 import '../app/models.dart';
 
@@ -42,15 +44,14 @@ final _appView = BlocConsumer<AppBloc, AppState>(
         return Menu();
       }
       if (state is UnauthorizedState) {
-        return const Text('Unauthorized');
-        // return LoginView()
+        return SignIn();
       }
       if (state is AuthedAsGuestState) {
         // return LoggedInView()
         return const Text('Guest view');
       }
       if (state is RegisteringState) {
-        // return CreateAccountView()
+        return CreateAccount();
       }
       throw ErrorDescription('A non-valid state was passed when building the app view!');
     }
