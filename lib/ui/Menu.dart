@@ -1,8 +1,10 @@
 import 'package:final_project/app/bloc/app_blocs.dart';
 import 'package:final_project/app/bloc/app_events.dart';
 import 'package:final_project/app/models.dart';
+import 'package:final_project/job_journal.dart';
 import 'package:final_project/ui/CostEstimatorView.dart';
 import 'package:final_project/ui/VideosView.dart';
+import 'package:final_project/ui/preferences.dart';
 import 'package:final_project/ui/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,14 +27,16 @@ class _MenuStatefulWidgetState extends State<Menu> with SingleTickerProviderStat
   //pages
   final _videosPage = const VideosView();
   final _estimatorPage = const CostEstimatorView();
-  final _pageTitles = <String>['Videos', 'City Cost Estimation', 'Browse Cities', 'Settings'];
+  final _pageTitles = <String>['Explore Jobs', 'Videos', 'City Cost Estimation', 'Browse Cities', 'Preferences', 'Settings'];
 
   @override
   void initState() {
     super.initState();
+    _pages.add(JobsPage());
     _pages.add(_videosPage);
     _pages.add(_estimatorPage);
     _pages.add(const CityStatsBrowser());
+    _pages.add(PreferencesPage());
     _pages.add(SettingsView());
   }
 
@@ -60,7 +64,7 @@ class _MenuStatefulWidgetState extends State<Menu> with SingleTickerProviderStat
                    TextButton.icon(
                        onPressed: () {
                          setState(() {
-                           // _value = 0;
+                           _value = 0;
                          });
                        },
                        label: const Text('Jobs',),
@@ -72,7 +76,7 @@ class _MenuStatefulWidgetState extends State<Menu> with SingleTickerProviderStat
                    TextButton.icon(
                      onPressed: () {
                        setState(() {
-                         _value = 2;
+                         _value = 3;
                        });
                      },
                      label: const Text('Browse Cities',),
@@ -96,6 +100,18 @@ class _MenuStatefulWidgetState extends State<Menu> with SingleTickerProviderStat
                        Icons.money,
                        size: 32.0
                       )
+                   ),
+                   TextButton.icon(
+                       onPressed: () {
+                         setState(() {
+                           _value = _pages.length - 2;
+                         });
+                       },
+                       label: const Text('Preferences',),
+                       icon: const Icon(
+                           Icons.info,
+                           size: 32.0
+                       )
                    ),
                    TextButton.icon(
                        onPressed: () {

@@ -10,6 +10,7 @@ class UserData {
   int? age;
   DateTime? birthday;
   String? email;
+  List<String> jobPreferences = <String>[];
 
   UserData({
     this.firstName,
@@ -29,6 +30,19 @@ class UserData {
     }
   }
 
+  void addPreference(String preference) {
+    jobPreferences.add(preference);
+  }
+
+  void removePreference(String preference) {
+    int i = jobPreferences.indexOf(preference);
+    jobPreferences.removeAt(i);
+  }
+
+  bool hasPreference(String preference) {
+    return jobPreferences.contains(preference);
+  }
+
   static Future<UserData> getUserDataFromDB() async {
     final auth = FirebaseAuth.instance;
     if (auth.currentUser != null) {
@@ -36,13 +50,17 @@ class UserData {
       final snapshot = await userDoc.get();
       final userData = snapshot.data();
       if (userData != null) {
-        return UserData(
+        final data = UserData(
           firstName: userData['firstName'],
           lastName: userData['lastName'],
           age: userData['age'],
           email: userData['email'],
           birthday: DateTime.fromMillisecondsSinceEpoch(userData['birthday']),
         );
+        for (var tag in userData['jobPreferences']) {
+          data.addPreference(tag);
+        }
+        return data;
       } else {
         return UserData();
       }
