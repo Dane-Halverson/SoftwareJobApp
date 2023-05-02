@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'themes.dart';
+import 'package:intl/intl.dart';
+
 
 class CreateAccount extends StatelessWidget {
   @override
@@ -70,6 +72,8 @@ class CreateAccountForm extends StatefulWidget{
 class _CreateAccountFormWidgetState extends State<CreateAccountForm>{
 
   var passwordVis = true;
+  final TextEditingController _dateInput = TextEditingController();
+  DateTime birthday = DateTime.now();
 
   @override
   void initState(){
@@ -97,6 +101,40 @@ class _CreateAccountFormWidgetState extends State<CreateAccountForm>{
                   labelText: 'Last Name',
                 ),),
             ],
+          ),
+          TextField(
+            controller: _dateInput,
+            //editing controller of this TextField
+            decoration: InputDecoration(
+              labelText:
+              "Enter Birthday",
+            ),
+            readOnly: true,
+            onTap: () async {
+              DateTime? pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(1900),
+                  //DateTime.now() - not to allow to choose before today.
+                  lastDate: DateTime.now());
+
+
+              if (pickedDate != null) {
+                birthday = pickedDate;//pickedDate output format => 2021-03-10 00:00:00.000
+                String formattedDate =
+                DateFormat('MM/dd/yyyy')
+                    .format(pickedDate);
+                print(
+                    formattedDate); //formatted date output using intl package =>  2021-03-16
+                //you can implement different kind of Date Format here according to your requirement
+
+                setState(() {
+                  _dateInput.text = formattedDate; //set output date to TextField value.
+                });
+              } else {
+                print("Date is not selected");
+              }
+            },
           ),
           TextFormField(
             decoration: const InputDecoration(
@@ -134,5 +172,9 @@ class _CreateAccountFormWidgetState extends State<CreateAccountForm>{
         ],
       ) ,
     );
+  }
+
+  DateTime getBirthday() {
+    return birthday;
   }
 }
