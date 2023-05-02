@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 import '../app/bloc/app_blocs.dart';
 
-
 class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -45,44 +44,38 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
               title:  Text('Sign out', style: Theme.of(context).textTheme.labelLarge),
               onPressed: (_) {
                 context.read<AppBloc>().add(
-                    const UserLoggedOutEvent()
+                  const UserLoggedOutEvent()
                 );
               },
             ),
             SettingsTile(
-              leading: const Icon(Icons.password),
-              title: Text(
-                'Reset Password',
-                style: Theme.of(context).textTheme.labelLarge
-              ),
-              onPressed: (_) {
-                // TODO implement a means of resetting password
-              },
+            leading: const Icon(Icons.password),
+            title: Text(
+            'Reset Password',
+            style: Theme.of(context).textTheme.labelLarge
+            ),
+            onPressed: (_) {
+            // TODO implement a means of resetting password
+            },
             ),
             SettingsTile(
-              leading: Icon(
-                Icons.delete,
-                color: Theme.of(context).colorScheme.error
-              ),
-              title: Text(
-                'Delete Account',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.error,
-                ),
-              ),
-              onPressed: (_) {
-                context.read<AppBloc>().add(
-                  const UserDeletedAccountEvent()
-                );
-              },
+            leading: Icon(
+            Icons.delete,
+            color: Theme.of(context).colorScheme.error
+            ),
+            title: Text(
+            'Delete Account',
+            style: TextStyle(
+            color: Theme.of(context).colorScheme.error,
+            ),
+            ),
+            onPressed: (_) {
+            context.read<AppBloc>().add(
+            const UserDeletedAccountEvent()
+            );
+            },
             ),
           ],
-        ),
-        SettingsSection(
-          title: const Text('Preferences'),
-          tiles: [
-
-          ]
         ),
       ],
     );

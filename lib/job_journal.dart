@@ -5,17 +5,17 @@ import 'dart:io';
 class JournalEntry {
   String companyTitle;
   String body;
-  double rating;
-  DateTime date;
+  double? rating;
+  late DateTime date;
 
-  JournalEntry(this.companyTitle, this.body, this.rating) {
+  JournalEntry({required this.companyTitle, required this.body, this.rating}) {
     date = DateTime.now();
   }
 
 }
 
 class Journal {
-  List<JournalEntry> entries;
+  late List<JournalEntry> entries;
 
   Journal() {
     entries = [];
@@ -30,34 +30,22 @@ class Journal {
   }
 }
 
-class JournalApp extends StatelessWidget {
-  final Journal journal = Journal();
+class JobsPage extends StatefulWidget {
+  final journal = Journal();
+
+  JobsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Job Journal',
-      home: JournalScreen(journal),
-    );
-  }
+  State<JobsPage> createState() => _JournalScreenState();
 }
 
-class JournalScreen extends StatefulWidget {
-  final Journal journal;
-
-  JournalScreen(this.journal);
-
-  @override
-  _JournalScreenState createState() => _JournalScreenState();
-}
-
-class _JournalScreenState extends State<JournalScreen> {
+class _JournalScreenState extends State<JobsPage> {
   void _addEntry() async {
     String title = await _showTextInputDialog('Entry Title');
     String body = await _showTextInputDialog('Entry Body');
 
     if (title.isNotEmpty && body.isNotEmpty) {
-      JournalEntry entry = JournalEntry(title, body);
+      JournalEntry entry = JournalEntry(companyTitle: title, body: body);
       setState(() {
         widget.journal.addEntry(entry);
       });
@@ -85,11 +73,11 @@ class _JournalScreenState extends State<JournalScreen> {
             ),
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text('CANCEL'),
               onPressed: () => Navigator.pop(context),
             ),
-            FlatButton(
+            TextButton(
               child: Text('OK'),
               onPressed: () => Navigator.pop(context, controller.text),
             ),
@@ -102,14 +90,11 @@ class _JournalScreenState extends State<JournalScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Job Journal'),
-      ),
       body: ListView.builder(
         itemCount: widget.journal.entries.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-            title: Text(widget.journal.entries[index].title),
+            title: Text(widget.journal.entries[index].companyTitle),
             subtitle: Text(widget.journal.entries[index].date.toString()),
             trailing: IconButton(
               icon: Icon(Icons.delete),
