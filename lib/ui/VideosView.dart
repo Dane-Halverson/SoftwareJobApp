@@ -15,10 +15,7 @@ class VideosView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: VideosStatefulWidget(key: super.key),
-    );
+    return VideosStatefulWidget(key: super.key);
   }
 }
 
@@ -103,6 +100,9 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> with Ticker
                         _controllers[i][index].reset();
                         _controllers[i][index].animateTo(0.6);
                       }
+                      else {
+                        _controllers[i][index].reset();
+                      }
                       return videosList[i].videos.isNotEmpty ? GestureDetector(
 
                           onTap: () {
@@ -144,17 +144,18 @@ class _VideosStatefulWidgetState extends State<VideosStatefulWidget> with Ticker
                                         .isFavorite) {
                                       _controllers[i][index].reset();
                                       _controllers[i][index].animateTo(0.6);
-                                      setState(() {
+
                                         videosList[i].videos[index].isFavorite =
                                         !videosList[i].videos[index].isFavorite;
                                         if (videosList[i].videos[index]
                                             .isFavorite) {
+
                                           videosList[0].videos.add(videosList[i].videos[index]);
                                           VideosModel.addFavorite
                                             (videosList[i].videos[index].id,
                                               videosList[i].videos[index].title);
                                         }
-                                      });
+
                                     } else {
                                       _controllers[i][index].reverse();
                                       videosList[i].videos[index].isFavorite =
