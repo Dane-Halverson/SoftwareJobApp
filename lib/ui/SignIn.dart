@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'themes.dart';
-import 'CreateAccount.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../app/bloc/app_blocs.dart';
+import '../app/bloc/app_events.dart';
 
 class SignIn extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,56 +27,14 @@ class SignIn extends StatelessWidget {
                         children: [
                         const Text('New?'),
                         TextButton(onPressed: (){
-
+                            //needs to actually call the page
+                          BlocProvider.of<AppBloc>(context).add(
+                            const GuestWantsToRegisterEvent()
+                          );
                         },
                             child: const Text('Create Account')),]
                       ),
                       SignInStateful(key: super.key),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            TextButton(onPressed: (){},
-                                child: const Text('Forgot Password?')),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                    Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 26),
-                        child:
-                      Column(
-                        children: [
-                          ElevatedButton(
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Text(
-                                    '     Sign in',
-                                  ),
-                                  Icon(Icons.keyboard_arrow_right,
-                                      size: 24.0),]
-                            ),
-                            onPressed: () {
-                              //runApp(CreateAccountPage(key: super.key));
-                            },
-                          ),
-                          TextButton(
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Text(
-                                    'Continue as Guest ',
-                                  ),]
-                            ),
-                            onPressed: () {
-                              //runApp(CreateAccountPage(key: super.key));
-                            },
-                          ),
-                        ],
-                      )),
                       Image.asset('assets/citysky.png')
                     ])));
   }
@@ -91,6 +51,10 @@ class SignInStateful extends StatefulWidget{
 class _SignInStatefulWidgetState extends State<SignInStateful>{
 
   var passwordVis = true;
+  final _formKey = GlobalKey<FormState>();
+
+  String _email = '';
+  String _password = '';
 
   @override
   void initState(){
@@ -100,18 +64,24 @@ class _SignInStatefulWidgetState extends State<SignInStateful>{
 
   @override
   Widget build(BuildContext context){
-
     return Padding(
      padding: const EdgeInsets.all(10),
      child: Column(
+       key: _formKey,
        mainAxisAlignment: MainAxisAlignment.center,
        children: [
          TextFormField(
+           onChanged: (value) {
+             _email = value.toString();
+           },
            decoration: const InputDecoration(
              icon: Icon(Icons.email_sharp),
              labelText: 'E-mail',
          ),),
          TextFormField(
+           onChanged: (value){
+             _password = value.toString();
+           },
            obscureText: passwordVis,
            decoration: InputDecoration(
              icon: const Icon(Icons.password_sharp),
@@ -124,7 +94,59 @@ class _SignInStatefulWidgetState extends State<SignInStateful>{
                           );
                   })
                   ),
-         )
+         ),
+         Padding(
+           padding: const EdgeInsets.symmetric(horizontal: 20),
+           child: Row(
+             mainAxisAlignment: MainAxisAlignment.start,
+             crossAxisAlignment: CrossAxisAlignment.center,
+             children: [
+               TextButton(onPressed: (){
+                 //NEED TO IMPLEMENT A FORGOT PASSWORD FUNCT
+               },
+                   child: const Text('Forgot Password?')),
+             ],
+           ),
+         ),
+         const SizedBox(width: 20),
+         Padding(
+             padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 26),
+             child:
+             Column(
+               children: [
+                 ElevatedButton(
+                   child: Row(
+                       mainAxisAlignment: MainAxisAlignment.center,
+                       children: const [
+                         Text(
+                           '     Sign in',
+                         ),
+                         Icon(Icons.keyboard_arrow_right,
+                             size: 24.0),]
+                   ),
+                   onPressed: () {
+                     BlocProvider.of<AppBloc>(context).add(
+                         UserLoggedInEvent(email: _email, password: _password)
+                     );
+                   },
+                 ),
+                 TextButton(
+                   child: Row(
+                       mainAxisAlignment: MainAxisAlignment.center,
+                       children: const [
+                         Text(
+                           'Continue as Guest ',
+                         ),
+                         Icon(Icons.person, size: 24.0)]
+                   ),
+                   onPressed: () {
+                     BlocProvider.of<AppBloc>(context).add(
+                         const GuestLoggedInEvent()
+                     );
+                   },
+                 ),
+               ],
+             ))
        ],
      ) ,
     );
