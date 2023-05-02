@@ -50,12 +50,60 @@ class PreferencesChipState extends State<PreferencesChip> {
 }
 
 class PreferencesPage extends StatelessWidget {
+  final _bioTextController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final userData = context.read<AppBloc>().userData;
+    final birthday = userData.birthday.toString().split(' ').elementAt(0);
+    _bioTextController.text = userData.bio;
     return Scaffold(
       body: ListView(
         children: [
+          Padding(
+            padding: EdgeInsets.all(15.0),
+            child: Text('Your Profile', style: Theme.of(context).textTheme.displayLarge),
+          ),
+          Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(userData.firstName!, style: Theme.of(context).textTheme.labelLarge),
+                  Text(userData.lastName!, style: Theme.of(context).textTheme.labelLarge)
+                ],
+              ),
+              Padding(
+                  padding: EdgeInsets.only(top: 25),
+                  child: Text(
+                    'Born on $birthday',
+                    style: Theme.of(context).textTheme.bodyMedium
+                  )
+              ),
+              Padding(
+                padding: EdgeInsets.all(15.0),
+                child: TextField(
+                  controller: _bioTextController,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                )
+              ),
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.all(15.0),
+            child: ElevatedButton(
+                onPressed: () async {
+                  final docRef = await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).get();
+                  final map = docRef.data()!;
+                  map['bio'] = _bioTextController.value.text;
+                  await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).set(map);
+                },
+                child: const Text(
+                  'Save'
+                )
+            ),
+          ),
           Padding(
             padding: EdgeInsets.all(15.0),
             child: Text('Select Job Tags', style: Theme.of(context).textTheme.titleLarge),

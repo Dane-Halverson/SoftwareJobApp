@@ -10,6 +10,7 @@ class UserData {
   int? age;
   DateTime? birthday;
   String? email;
+  String bio;
   List<String> jobPreferences = <String>[];
 
   UserData({
@@ -17,7 +18,8 @@ class UserData {
     this.lastName,
     this.age,
     this.birthday,
-    this.email
+    this.email,
+    this.bio = 'Your bio goes here.'
   }) {
     final now = DateTime.now();
     if (age != null && birthday != null) {
@@ -54,6 +56,7 @@ class UserData {
           firstName: userData['firstName'],
           lastName: userData['lastName'],
           age: userData['age'],
+          bio: userData['bio'],
           email: userData['email'],
           birthday: DateTime.fromMillisecondsSinceEpoch(userData['birthday']),
         );
