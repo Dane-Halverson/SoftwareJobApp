@@ -84,94 +84,97 @@ class _CreateAccountFormWidgetState extends State<CreateAccountForm>{
   @override
   Widget build(BuildContext context){
 
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            children: [
-              TextFormField(
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.person),
-                  labelText: 'First Name',
-                ),),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Last Name',
-                ),),
-            ],
-          ),
-          TextField(
-            controller: _dateInput,
-            //editing controller of this TextField
-            decoration: InputDecoration(
-              labelText:
-              "Enter Birthday",
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                TextFormField(
+                  decoration: const InputDecoration(
+                    icon: Icon(Icons.person),
+                    labelText: 'First Name',
+                  ),),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Last Name',
+                  ),),
+              ],
             ),
-            readOnly: true,
-            onTap: () async {
-              DateTime? pickedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(1900),
-                  //DateTime.now() - not to allow to choose before today.
-                  lastDate: DateTime.now());
+            TextField(
+              controller: _dateInput,
+              //editing controller of this TextField
+              decoration: InputDecoration(
+                labelText:
+                "Enter Birthday",
+              ),
+              readOnly: true,
+              onTap: () async {
+                DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1900),
+                    //DateTime.now() - not to allow to choose before today.
+                    lastDate: DateTime.now());
 
 
-              if (pickedDate != null) {
-                birthday = pickedDate;//pickedDate output format => 2021-03-10 00:00:00.000
-                String formattedDate =
-                DateFormat('MM/dd/yyyy')
-                    .format(pickedDate);
-                print(
-                    formattedDate); //formatted date output using intl package =>  2021-03-16
-                //you can implement different kind of Date Format here according to your requirement
+                if (pickedDate != null) {
+                  birthday = pickedDate;//pickedDate output format => 2021-03-10 00:00:00.000
+                  String formattedDate =
+                  DateFormat('MM/dd/yyyy')
+                      .format(pickedDate);
+                  print(
+                      formattedDate); //formatted date output using intl package =>  2021-03-16
+                  //you can implement different kind of Date Format here according to your requirement
 
-                setState(() {
-                  _dateInput.text = formattedDate; //set output date to TextField value.
-                });
-              } else {
-                print("Date is not selected");
-              }
-            },
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              icon: Icon(Icons.email_sharp),
-              labelText: 'E-mail',
-            ),),
-          TextFormField(
-            obscureText: passwordVis,
-            decoration: InputDecoration(
-                icon: const Icon(Icons.password_sharp),
-                labelText: 'Password',
-                suffixIcon: IconButton(
-                    icon: Icon(
-                        passwordVis ? Icons.visibility : Icons.visibility_off),
-                    onPressed: () {
-                      setState(() { passwordVis = !passwordVis; },
-                      );
-                    })
+                  setState(() {
+                    _dateInput.text = formattedDate; //set output date to TextField value.
+                  });
+                } else {
+                  print("Date is not selected");
+                }
+              },
             ),
-          ),
-          TextFormField(
-            obscureText: passwordVis,
-            decoration: InputDecoration(
-                icon: const Icon(Icons.password_sharp),
-                labelText: 'Re-enter Password',
-                suffixIcon: IconButton(
-                    icon: Icon(
-                        passwordVis ? Icons.visibility : Icons.visibility_off),
-                    onPressed: () {
-                      setState(() { passwordVis = !passwordVis; },
-                      );
-                    })
+            TextFormField(
+              decoration: const InputDecoration(
+                icon: Icon(Icons.email_sharp),
+                labelText: 'E-mail',
+              ),),
+            TextFormField(
+              obscureText: passwordVis,
+              decoration: InputDecoration(
+                  icon: const Icon(Icons.password_sharp),
+                  labelText: 'Password',
+                  suffixIcon: IconButton(
+                      icon: Icon(
+                          passwordVis ? Icons.visibility : Icons.visibility_off),
+                      onPressed: () {
+                        setState(() { passwordVis = !passwordVis; },
+                        );
+                      })
+              ),
             ),
-          ),
-        ],
-      ) ,
+            TextFormField(
+              obscureText: passwordVis,
+              decoration: InputDecoration(
+                  icon: const Icon(Icons.password_sharp),
+                  labelText: 'Re-enter Password',
+                  suffixIcon: IconButton(
+                      icon: Icon(
+                          passwordVis ? Icons.visibility : Icons.visibility_off),
+                      onPressed: () {
+                        setState(() { passwordVis = !passwordVis; },
+                        );
+                      })
+              ),
+            ),
+          ],
+        ) ,
+      ),
     );
+
   }
 
   DateTime getBirthday() {
