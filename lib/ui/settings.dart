@@ -11,8 +11,8 @@ import '../app/bloc/app_blocs.dart';
 class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SettingsStatefulWidget(key: super.key),
+    return Container(
+      child: SettingsStatefulWidget(key: super.key),
     );
   }
 }
@@ -24,11 +24,15 @@ class SettingsStatefulWidget extends StatefulWidget {
   State<SettingsStatefulWidget> createState() => _SettingsStatefulWidgetState();
 }
 
+bool darkMode = false;
+
+
 class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
   User? user = FirebaseAuth.instance.currentUser;
   var instance = FirebaseAuth.instance;
 
-  bool darkMode = false;
+
+  final List<Widget> _pages = [];
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +83,7 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
           ],
         ),
         SettingsSection(
-            title: const Text('Theme'),
+            title: const Text('App'),
             tiles: [
               SettingsTile.switchTile(
                   title: const Text('Dark Mode'),
@@ -97,8 +101,18 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
                     });
 
                 },
-              )
-            ])
+              ),
+
+            ]),
+        SettingsSection(
+            title: const Text('Credits'),
+            tiles: [
+          SettingsTile(
+            title: const Text('Job Database Info Authors'),
+            description: const Text('Bruno Bonfrisco and Franco Seveso'),
+            leading: const Icon(Icons.info),
+          )
+        ])
       ],
     );
   }
