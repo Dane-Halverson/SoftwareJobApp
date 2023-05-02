@@ -1,4 +1,5 @@
 import 'package:final_project/ui/CostEstimatorView.dart';
+import 'package:final_project/ui/CreateAccount.dart';
 import 'package:final_project/ui/VideosView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
@@ -29,12 +30,14 @@ class _MenuStatefulWidgetState extends State<MenuStatefulWidget> with SingleTick
   //pages
   final _videosPage = VideosView();
   final _estimatorPage = CostEstimatorView();
+  final _createAccountPage = CreateAccount();
 
   @override
   void initState() {
     super.initState();
     _pages.add(_videosPage);
     _pages.add(_estimatorPage);
+    _pages.add(_createAccountPage);
   }
 
 
@@ -76,6 +79,15 @@ class _MenuStatefulWidgetState extends State<MenuStatefulWidget> with SingleTick
                              fontSize: 30
                          ),
 
+                       )),
+                   TextButton(
+                       onPressed: switchToCreateAccount,
+                       child: const Text("Cost Estimator",
+                         style: TextStyle(
+                             color: Colors.white,
+                             fontSize: 30
+                         ),
+
                        ))
                  ],
                ),
@@ -99,6 +111,12 @@ class _MenuStatefulWidgetState extends State<MenuStatefulWidget> with SingleTick
   void switchToEstimator() {
     setState(() {
       _value = _pages.indexOf(_estimatorPage);
+    });
+  }
+
+  void switchToCreateAccount() {
+    setState(() {
+      _value = _pages.indexOf(_createAccountPage);
     });
   }
 
