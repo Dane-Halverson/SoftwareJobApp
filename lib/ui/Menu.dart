@@ -167,7 +167,7 @@ class _GuestMenuStatefulWidgetState extends State<GuestMenu> with SingleTickerPr
   //pages
   final _browsePage = const CityStatsBrowser();
   final _estimatorPage = const CostEstimatorView();
-  final _pageTitles = <String>['Videos', 'City Cost Estimation'];
+  final _pageTitles = <String>['Browse Cities', 'City Cost Estimation'];
 
   @override
   void initState() {
@@ -213,7 +213,7 @@ class _GuestMenuStatefulWidgetState extends State<GuestMenu> with SingleTickerPr
                           },
                           label: const Text('Browse Cities',),
                           icon: const Icon(
-                              Icons.money,
+                              Icons.browse_gallery,
                               size: 32.0
                           )
                       ),
