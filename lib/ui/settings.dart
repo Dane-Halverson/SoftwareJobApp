@@ -28,21 +28,21 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
   var instance = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
-
-    late String? email = user?.email != null ? user?.email! : '';
+    final userData = context.read<AppBloc>().userData;
+    late String? email = userData.email;
     return SettingsList(
       sections: [
         SettingsSection(
-          title: Text('Account'),
+          title: const Text('Account'),
           tiles: <SettingsTile>[
             SettingsTile(
               leading: const Icon(Icons.email),
-              title: const Text('Account Email'),
-              value: Text(email!),
+              title: Text('Account Email', style: Theme.of(context).textTheme.labelLarge),
+              value: Text(email),
             ),
             SettingsTile(
               leading: const Icon(Icons.logout),
-              title:  const Text('Sign out'),
+              title:  Text('Sign out', style: Theme.of(context).textTheme.labelLarge),
               onPressed: (_) {
                 context.read<AppBloc>().add(
                     const UserLoggedOutEvent()
@@ -51,13 +51,19 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
             ),
             SettingsTile(
               leading: const Icon(Icons.password),
-              title: const Text('Reset Password'),
+              title: Text(
+                'Reset Password',
+                style: Theme.of(context).textTheme.labelLarge
+              ),
               onPressed: (_) {
-
+                // TODO implement a means of resetting password
               },
             ),
             SettingsTile(
-              leading: const Icon(Icons.delete),
+              leading: Icon(
+                Icons.delete,
+                color: Theme.of(context).colorScheme.error
+              ),
               title: Text(
                 'Delete Account',
                 style: TextStyle(
@@ -71,6 +77,12 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
               },
             ),
           ],
+        ),
+        SettingsSection(
+          title: const Text('Preferences'),
+          tiles: [
+
+          ]
         ),
       ],
     );

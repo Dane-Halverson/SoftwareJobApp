@@ -22,7 +22,7 @@ class _CityStatsBrowserState extends State<CityStatsBrowser> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, List<CityData>>>(
+    return Scaffold(body: FutureBuilder<Map<String, List<CityData>>>(
       future: _cityToStateMap,
       builder: (context, snapshot) {
         final tiles = <ExpansionTile>[];
@@ -81,6 +81,6 @@ class _CityStatsBrowserState extends State<CityStatsBrowser> {
           return const Center(child: CircularProgressIndicator(),);
         }
       },
-    );
+    ));
   }
 }
