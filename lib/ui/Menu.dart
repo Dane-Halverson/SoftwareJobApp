@@ -1,5 +1,6 @@
 import 'package:final_project/ui/CostEstimatorView.dart';
 import 'package:final_project/ui/VideosView.dart';
+import 'package:final_project/ui/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 
@@ -37,6 +38,7 @@ class _MenuStatefulWidgetState extends State<MenuStatefulWidget> with SingleTick
     _pages.add(_videosPage);
     _pages.add(_estimatorPage);
     _pages.add(CityStatsBrowser());
+    _pages.add(SettingsView());
   }
 
 
