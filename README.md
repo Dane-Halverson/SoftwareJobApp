@@ -1,16 +1,2 @@
-# final_project
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Software Engineering Job App
+This is an app created in a group project that will help the user find software engennering jobs. It allows the user to look at stats for differnt cites so they can see the average salaries and calculate how much it would cost to relocate to those cites. It has a few other features such as being able to view videos to prepare for interviews.
