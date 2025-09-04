@@ -49,3 +49,4 @@ app.*.map.json
 **scripts/credentials.json
 **lib/tests/test_ssh_signing.rs
 **lib/tests/test_gpg.rs
+**lib/firebase_options.dart
