@@ -37,6 +37,16 @@ class UserLoggedInEvent implements AppEvent {
 }
 
 @immutable
+class NoUserEvent implements AppEvent {
+  const NoUserEvent();
+}
+
+@immutable
+class AppAuthChangedEvent implements AppEvent {
+  const AppAuthChangedEvent();
+}
+
+@immutable
 class UserLoggedOutEvent implements AppEvent {
   const UserLoggedOutEvent();
 }
@@ -44,6 +54,21 @@ class UserLoggedOutEvent implements AppEvent {
 @immutable
 class UserDeletedAccountEvent implements AppEvent {
   const UserDeletedAccountEvent();
+}
+
+@immutable
+class UpdateUserPreferencesEvent implements AppEvent {
+  final String preference;
+  final bool isSelected;
+
+  const UpdateUserPreferencesEvent({required this.preference, required this.isSelected});
+}
+
+@immutable
+class UpdateUserBioEvent implements AppEvent {
+  final String bio;
+
+  const UpdateUserBioEvent({required this.bio});
 }
 
 @immutable

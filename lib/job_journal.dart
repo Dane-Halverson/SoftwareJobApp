@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
 
 // Create a journal for user to write notes...
 class JournalEntry {

@@ -7,8 +7,11 @@ import 'app_events.dart';
 import 'app_state.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
-  UserData userData;
-  AppBloc({required this.userData}) : super(AppState.loadAuthState()) {
+  AppBloc() : super(UnauthorizedState()) {
+    on<AppAuthChangedEvent>((event, emit) async {
+      final AppState state = await AppState.loadAuthState();
+      emit(state);
+    });
     // since the user data would be null here, we can use a future builder to build the pages requiring the user data class if the Authorized state is detected with null data
     on<UserRegisteredEvent>((UserRegisteredEvent event, Emitter<AppState> emit) async {
       final auth = FirebaseAuth.instance;
@@ -23,7 +26,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
             'birthday': event.birthday.millisecondsSinceEpoch,
             'email': event.email,
           });
-          userData = UserData(
+          final newUserData = UserData(
             firstName: event.firstName,
             lastName: event.lastName,
             age: event.age,
@@ -32,7 +35,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           );
           emit(
             AuthorizedState(
-              userData: userData
+              userData: newUserData
             )
           );
         }
@@ -67,6 +70,34 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           emit(UnauthorizedState());
         } on FirebaseAuthException catch(err) {
           // TODO delete may throw an error requiring the user to auth again, so handle this error
+        }
+      }
+    });
+    on<UpdateUserPreferencesEvent>((UpdateUserPreferencesEvent event, Emitter<AppState> emit) async {
+      if (state is AuthorizedState) {
+        final UserData? userData = (state as AuthorizedState).userData;
+        if (userData != null && FirebaseAuth.instance.currentUser != null) {
+          if (event.isSelected) {
+            userData.addPreference(event.preference);
+          } else {
+            userData.removePreference(event.preference);
+          }
+          await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).update({
+            'jobPreferences': userData.jobPreferences
+          });
+          emit(AuthorizedState(userData: userData));
+        }
+      }
+    });
+    on<UpdateUserBioEvent>((UpdateUserBioEvent event, Emitter<AppState> emit) async {
+      if (state is AuthorizedState) {
+        final UserData? userData = (state as AuthorizedState).userData;
+        if (userData != null && FirebaseAuth.instance.currentUser != null) {
+          userData.bio = event.bio;
+          await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).update({
+            'bio': userData.bio
+          });
+          emit(AuthorizedState(userData: userData));
         }
       }
     });

@@ -7,10 +7,15 @@ import 'package:flutter/cupertino.dart';
 abstract class AppState {
   const AppState();
 
-  static AppState loadAuthState() {
+  static Future<AppState> loadAuthState() async {
     final auth = FirebaseAuth.instance;
     if (auth.currentUser != null) {
-      return AuthorizedState();
+      try {
+        final userData = await UserData.getUserDataFromDB();
+        return AuthorizedState(userData: userData);
+      } catch (e) {
+        return UnauthorizedState();
+      }
     } else {
       return UnauthorizedState();
     }

@@ -1,4 +1,5 @@
 
+import 'package:final_project/app/bloc/app_events.dart';
 import 'package:final_project/app/bloc/app_blocs.dart';
 import 'package:final_project/app/bloc/app_state.dart';
 import 'package:final_project/ui/Menu.dart';
@@ -42,54 +43,40 @@ BlocConsumer<AppBloc, AppState> _getAppView() {
 }
 
 class AppLightTheme extends StatelessWidget {
-  final _userData = UserData.getUserDataFromDB();
-
   AppLightTheme({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<UserData>(
-        future: _userData,
-        builder: (BuildContext context, AsyncSnapshot<UserData> snapshot) {
-          if (!snapshot.hasData) {
-            return loader;
-          }
-          final data = snapshot.data!;
-          return BlocProvider<AppBloc>(
-              create: (_) => AppBloc(userData: data),
-              child: MaterialApp(
-                  title: 'Final Project',
-                  theme: lightTheme,
-                  home: _getAppView()
-          ));
-        }
-    );
+    return BlocProvider<AppBloc>(
+        create: (context) {
+          final appBloc = AppBloc();
+          appBloc.add(AppAuthChangedEvent());
+          return appBloc;
+        },
+        child: MaterialApp(
+            title: 'Final Project',
+            theme: lightTheme,
+            home: _getAppView()
+        ));
   }
 }
 
 class AppDarkTheme extends StatelessWidget {
-  final _userData = UserData.getUserDataFromDB();
-
   AppDarkTheme({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<UserData>(
-        future: _userData,
-        builder: (BuildContext context, AsyncSnapshot<UserData> snapshot) {
-          if (!snapshot.hasData) {
-            return loader;
-          }
-          final data = snapshot.data!;
-          return BlocProvider<AppBloc>(
-              create: (_) => AppBloc(userData: data),
-              child: MaterialApp(
-                  title: 'Final Project',
-                  theme: darkTheme,
-                  home: _getAppView()
-          ));
-        }
-    );
+    return BlocProvider<AppBloc>(
+        create: (context) {
+          final appBloc = AppBloc();
+          appBloc.add(AppAuthChangedEvent());
+          return appBloc;
+        },
+        child: MaterialApp(
+            title: 'Final Project',
+            theme: darkTheme,
+            home: _getAppView()
+        ));
   }
 }
 

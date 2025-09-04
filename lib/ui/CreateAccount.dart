@@ -125,8 +125,7 @@ class _CreateAccountFormWidgetState extends State<CreateAccountForm> {
                     pickedDate;
                 age = _currentDate.year - birthday.year;
                 //pickedDate output format => 2021-03-10 00:00:00.000
-                String formattedDate =
-                    DateFormat('MM/dd/yyyy').format(pickedDate);
+                String formattedDate = DateFormat('MM/dd/yyyy').format(pickedDate);
                 print(
                     formattedDate); //formatted date output using intl package =>  2021-03-16
                 //you can implement different kind of Date Format here according to your requirement
@@ -184,9 +183,9 @@ class _CreateAccountFormWidgetState extends State<CreateAccountForm> {
               child: Column(
                 children: [
                   ElevatedButton(
-                    child: Row(
+                    child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Text(
                             'Create account',
                           ),
@@ -207,9 +206,9 @@ class _CreateAccountFormWidgetState extends State<CreateAccountForm> {
                     },
                   ),
                   TextButton(
-                    child: Row(
+                    child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Text(
                             'Continue as Guest ',
                           ),
