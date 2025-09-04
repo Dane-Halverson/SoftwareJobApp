@@ -46,3 +46,6 @@ app.*.map.json
 # Firebase config files
 **/google-services.json
 **/GoogleService-Info.plist
+**scripts/credentials.json
+**lib/tests/test_ssh_signing.rs
+**lib/tests/test_gpg.rs
